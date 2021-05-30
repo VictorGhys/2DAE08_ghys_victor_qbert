@@ -10,6 +10,7 @@
 #include <SDL.h>
 #include "GameTime.h"
 #include "audio.h"
+//#include "Game.h"
 #include "SDL2SoundSystem.h"
 
 using namespace std;
@@ -58,7 +59,7 @@ void dae::Minigin::Cleanup()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(function<void()> loadGame)
+void dae::Minigin::Run(/*Game* game*/ /*std::function<void()> loadGame*/ Game* game)
 {
 	// to find memory leak
 	//HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
@@ -70,7 +71,8 @@ void dae::Minigin::Run(function<void()> loadGame)
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
-	loadGame();
+	if (game)
+		game->LoadGame();
 
 	{
 		auto& renderer = Renderer::GetInstance();

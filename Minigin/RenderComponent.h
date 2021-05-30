@@ -14,7 +14,7 @@ namespace dae {
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
-		
+
 		void Update() override;
 		void Render() const;
 		std::shared_ptr<dae::Texture2D> GetTexture() const;
