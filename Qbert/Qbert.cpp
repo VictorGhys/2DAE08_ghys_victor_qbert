@@ -7,6 +7,7 @@
 #include "InputManager.h"
 #include "LoggingSoundSystem.h"
 #include "PointsDisplayComponent.h"
+#include "QbertCommands.h"
 #include "QbertComponent.h"
 #include "RenderComponent.h"
 #include "ResourceManager.h"

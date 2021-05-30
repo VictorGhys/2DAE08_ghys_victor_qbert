@@ -427,15 +427,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LoggingSoundSystem.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginLibType.h" />
     <ClInclude Include="MiniginPCH.h" />
-    <ClInclude Include="QbertObserver.h" />
-    <ClInclude Include="PointsDisplayComponent.h" />
-    <ClInclude Include="QbertComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Renderer.h" />
@@ -528,7 +524,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LoggingSoundSystem.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -545,9 +540,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="QbertObserver.cpp" />
-    <ClCompile Include="PointsDisplayComponent.cpp" />
-    <ClCompile Include="QbertComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />

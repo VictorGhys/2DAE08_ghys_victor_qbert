@@ -8,18 +8,9 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
-#include "FPSComponent.h"
-#include "TextObject.h"
-#include "GameObject.h"
-#include "HealthDisplayComponent.h"
-#include "PointsDisplayComponent.h"
-#include "Scene.h"
-#include "RenderComponent.h"
-#include "TextComponent.h"
 #include "GameTime.h"
 #include "audio.h"
 #include "SDL2SoundSystem.h"
-#include "LoggingSoundSystem.h"
 
 using namespace std;
 using namespace std::chrono;

@@ -338,7 +338,18 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HealthDisplayComponent.cpp" />
+    <ClCompile Include="PointsDisplayComponent.cpp" />
     <ClCompile Include="Qbert.cpp" />
+    <ClCompile Include="QbertComponent.cpp" />
+    <ClCompile Include="QbertObserver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HealthDisplayComponent.h" />
+    <ClInclude Include="PointsDisplayComponent.h" />
+    <ClInclude Include="QbertCommands.h" />
+    <ClInclude Include="QbertComponent.h" />
+    <ClInclude Include="QbertObserver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
