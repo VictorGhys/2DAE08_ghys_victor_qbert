@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+
 #include "MiniginLibType.h"
 struct SDL_Window;
 namespace dae
@@ -11,11 +13,11 @@ namespace dae
 		void Initialize();
 		void LoadGame() const;
 		void Cleanup();
-		void Run();
+		void Run(std::function<void()> loadGame);
 	private:
 		static const int MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
 		SDL_Window* m_Window{};
-		GameObject* m_Qbert;
-		GameObject* m_Qbert2;
+		/*GameObject* m_Qbert;
+		GameObject* m_Qbert2;*/
 	};
 }

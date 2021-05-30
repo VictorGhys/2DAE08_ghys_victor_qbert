@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include <chrono>
+#include <functional>
 #include <thread>
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -52,95 +53,8 @@ void dae::Minigin::Initialize()
 	}
 	initAudio();
 
-	m_Qbert = new GameObject();
-	m_Qbert2 = new GameObject();
-}
-
-/**
- * Code constructing the scene world starts here
- */
-void dae::Minigin::LoadGame() const
-{
-	// best way to do this is to read it in from a file
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
-
-	/*auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
-	go->SetPosition(216, 180);
-	scene.Add(go);
-
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);*/
-	auto go = new GameObject();
-	RenderComponent* renderComponent = new RenderComponent(go);
-	go->AddComponent(renderComponent);
-	go->GetComponentByType<RenderComponent>()->SetTexture("background.jpg");
-	scene.Add(go);
-
-	go = new GameObject();
-	go->AddComponent(new RenderComponent(go));
-	go->GetComponentByType<RenderComponent>()->SetTexture("logo.png");
-	//go->SetPosition(216, 180);
-	go->GetComponentByType<RenderComponent>()->SetPosition(216, 180);
-	scene.Add(go);
-
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go = new GameObject();
-	auto textComponent = new TextComponent(go, "Programming 4 Assignment", font);
-	go->AddComponent(textComponent);
-	textComponent->SetPosition(80, 20);
-	//go->SetPosition(80, 20);
-	scene.Add(go);
-
-	go = new GameObject();
-	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	go->AddComponent(new FPSComponent(go, "Programming 4 Assignment", font));
-	go->SetPosition(0, 0);
-	scene.Add(go);
-
-	m_Qbert->AddComponent(new QbertComponent(m_Qbert));
-	scene.Add(m_Qbert);
-
-	m_Qbert2->AddComponent(new QbertComponent(m_Qbert2));
-	scene.Add(m_Qbert2);
-
-	go = new GameObject();
-	auto pointsDisplayComponent = new PointsDisplayComponent(go, "", font);
-	m_Qbert->AddComponent(pointsDisplayComponent);
-	pointsDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent->SetPosition(300, 400);
-	scene.Add(go);
-
-	go = new GameObject();
-	auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font);
-	m_Qbert2->AddComponent(pointsDisplayComponent2);
-	pointsDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent2->SetPosition(350, 400);
-	scene.Add(go);
-
-	go = new GameObject();
-	auto healthDisplayComponent = new HealthDisplayComponent(go, "", font);
-	m_Qbert->AddComponent(healthDisplayComponent);
-	healthDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	healthDisplayComponent->SetPosition(0, 400);
-	scene.Add(go);
-
-	go = new GameObject();
-	auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font);
-	m_Qbert2->AddComponent(healthDisplayComponent2);
-	healthDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
-	healthDisplayComponent2->SetPosition(30, 400);
-	scene.Add(go);
-
-	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
-	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
-	ServiceLocator::GetSoundSystem().Play("../Data/door1.wav", 100);
+	/*m_Qbert = new GameObject();
+	m_Qbert2 = new GameObject();*/
 }
 
 void dae::Minigin::Cleanup()
@@ -153,7 +67,7 @@ void dae::Minigin::Cleanup()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run()
+void dae::Minigin::Run(function<void()> loadGame)
 {
 	// to find memory leak
 	//HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
@@ -165,26 +79,12 @@ void dae::Minigin::Run()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
-	LoadGame();
+	loadGame();
 
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
-		//create binds
-		input.BindCommand(ControllerButton::ButtonA, new JumpCommand());
-		input.BindCommand(ControllerButton::ButtonB, new FireCommand());
-		input.BindCommand(ControllerButton::ButtonX, new DuckCommand());
-		input.BindCommand(ControllerButton::ButtonY, new FartCommand());
-		input.BindCommand(ControllerButton::ButtonRB, new JumpCommand());
-		input.BindCommand(ControllerButton::ButtonLB, new FireCommand());
-		input.BindCommand(ControllerButton::ButtonRT, new DuckCommand());
-		input.BindCommand(ControllerButton::ButtonLT, new FartCommand());
-		input.BindCommand(ControllerButton::ButtonUP, new KillQbertCommand(m_Qbert));
-		input.BindCommand(ControllerButton::ButtonLEFT, new AddPointsCommand(m_Qbert));
-		input.BindCommand(ControllerButton::ButtonDOWN, new KillQbertCommand(m_Qbert2));
-		input.BindCommand(ControllerButton::ButtonRIGHT, new AddPointsCommand(m_Qbert2));
-		input.BindCommand(ControllerButton::ButtonSTART, new ToggleMuteCommand());
 
 		bool doContinue = true;
 		auto lastTime = high_resolution_clock::now();
