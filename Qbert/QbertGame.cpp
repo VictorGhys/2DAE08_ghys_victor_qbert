@@ -1,5 +1,8 @@
 #include <MiniginPCH.h>
 #include "QbertGame.h"
+
+#include <fstream>
+
 #include "FPSComponent.h"
 #include "GameObject.h"
 #include "HealthDisplayComponent.h"
@@ -123,31 +126,75 @@ void QbertGame::LoadGame()
 	input.BindCommand(ControllerButton::ButtonSTART, new ToggleMuteCommand());
 
 	// Create Level
-	CreateLevel(scene, 1);
+	CreateLevel(scene, "../Data/Level1.txt");
 }
 
-void QbertGame::CreateLevel(dae::Scene& scene, int /*levelNb*/)
+void QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 {
 	std::cout << "creating level...\n";
-	const int rows{ 7 };
-	const int cols{ 7 };
-	glm::vec2 start{ 320,140 };//320,240
-	const float size{ 20.f };
+
+	glm::vec2 start{ 120,110 };//320,240//220,140
+	const float size{ 32.f };//16
 	const float height{ 2 * size };
 	const float width{ sqrt(3.f) * size };
-	dae::GameObject* level[rows][cols];
 
-	for (int r{}; r < 7; r++)
+	std::ifstream levelInput;
+	levelInput.open(path);
+	if (!levelInput.is_open())
 	{
-		for (int c{}; c < 7; c++)
+		std::cout << "Failed to open " << path << std::endl;
+		return;
+	}
+	std::string line;
+	int row{};
+	int col{};
+	while (std::getline(levelInput, line))
+	{
+		for (auto character : line)
 		{
 			auto go = new dae::GameObject();
-			auto tileComponent = new LevelTileComponent(go);
+			LevelTileComponent* tileComponent;
+			if (row % 2 != 0)
+			{
+				// shift to right
+				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
+					start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f);
+				//go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f);
+			}
+			else
+			{
+				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
+					start.x + width * col, start.y + height * row * 3.f / 4.f);
+				//go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * col, start.y + height * row * 3.f / 4.f);
+			}
 			go->AddComponent(tileComponent);
-			tileComponent->SetTile("../Data/Tile1.png");
-			level[r][c] = go;
+			m_Level[row][col] = go;
 			scene.Add(go);
-			go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * c, start.y + height * r);
+
+			col++;
 		}
+		col = 0;
+		row++;
 	}
+	//for (int r{}; r < 7; r++)
+	//{
+	//	for (int c{}; c < 7; c++)
+	//	{
+	//		auto go = new dae::GameObject();
+	//		auto tileComponent = new LevelTileComponent(go);
+	//		go->AddComponent(tileComponent);
+	//		tileComponent->SetTile("../Data/Tile1.png");
+	//		level[r][c] = go;
+	//		scene.Add(go);
+	//		if ((r + 1) % 2 == 0)
+	//		{
+	//			// shift to right
+	//			go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * c + width / 2.f, start.y + height * r * 3.f / 4.f);
+	//		}
+	//		else
+	//		{
+	//			go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * c, start.y + height * r * 3.f / 4.f);
+	//		}
+	//	}
+	//}
 }

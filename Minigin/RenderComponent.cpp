@@ -8,9 +8,11 @@
 #include "GameObject.h"
 
 dae::RenderComponent::RenderComponent(GameObject* pOwner)
-	:Component(pOwner)
+	:Component(pOwner),
+	m_CustomWidthHeight(false),
+	m_Width(),
+	m_Height()
 {
-	
 }
 void dae::RenderComponent::Render() const
 {
@@ -18,7 +20,14 @@ void dae::RenderComponent::Render() const
 	{
 		//const auto pos = GetOwner()->GetTransform().GetPosition();
 		//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
-		Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y);
+		if (m_CustomWidthHeight)
+		{
+			Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y, m_Width, m_Height);
+		}
+		else
+		{
+			Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y);
+		}
 	}
 }
 std::shared_ptr<dae::Texture2D> dae::RenderComponent::GetTexture() const
@@ -37,7 +46,6 @@ void dae::RenderComponent::SetTexture(const std::shared_ptr<Texture2D>& pTexture
 
 void dae::RenderComponent::Update()
 {
-	
 }
 dae::RenderComponent::~RenderComponent()
 {
@@ -47,4 +55,7 @@ void dae::RenderComponent::SetPosition(const float x, const float y)
 {
 	m_Transform.SetPosition(x, y, 0.0f);
 }
-
+const glm::vec3& dae::RenderComponent::GetPosition() const
+{
+	return m_Transform.GetPosition();
+}

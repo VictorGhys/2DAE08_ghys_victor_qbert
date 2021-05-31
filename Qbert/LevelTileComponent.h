@@ -2,6 +2,10 @@
 #include <Component.h>
 #include <iostream>
 //#include "GameObject.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/glm.hpp>
+#pragma warning(pop)
 
 namespace dae {
 	class RenderComponent;
@@ -16,7 +20,15 @@ namespace dae {
 class LevelTileComponent : public dae::Component
 {
 public:
-	LevelTileComponent(dae::GameObject* pOwner);
+	enum class TileType : char
+	{
+		TILE = 'T',
+		DOUBLE_TILE = '2',
+		REVERTABLE = 'R',
+		DISK = 'D',
+		DEATH = '.'
+	};
+	LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos);
 	~LevelTileComponent() override = default;
 
 	void Update() override;
@@ -25,5 +37,6 @@ public:
 
 private:
 	dae::RenderComponent* m_Tile;
+	TileType m_Type;
 	//glm::vec3 m_ActiveColor{ 255,255,255 };
 };
