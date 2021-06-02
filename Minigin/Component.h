@@ -8,7 +8,7 @@ namespace dae
 	public:
 		virtual void Update() = 0;
 		GameObject* GetOwner() const;
-		
+
 		Component(GameObject* pOwner);
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;

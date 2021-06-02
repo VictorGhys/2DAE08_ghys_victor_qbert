@@ -5,7 +5,7 @@
 int main(int, char* [])
 {
 	dae::Minigin engine;
-	QbertGame* qbertGame = new QbertGame();
+	qbert::QbertGame* qbertGame = new qbert::QbertGame();
 	engine.Run(qbertGame);
 	delete qbertGame;
 	return 0;

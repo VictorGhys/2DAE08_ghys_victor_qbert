@@ -9,6 +9,7 @@
 #include "InputManager.h"
 #include "LevelTileComponent.h"
 #include "LoggingSoundSystem.h"
+#include "MovementComponent.h"
 #include "PointsDisplayComponent.h"
 #include "QbertCommands.h"
 #include "QbertComponent.h"
@@ -22,7 +23,7 @@
 /**
  * Code constructing the scene world starts here
  */
-void QbertGame::LoadGame()
+void qbert::QbertGame::LoadGame()
 {
 	using namespace dae;
 	// best way to do this is to read it in from a file
@@ -115,21 +116,20 @@ void QbertGame::LoadGame()
 	input.BindCommand(ControllerButton::ButtonB, new FireCommand());
 	input.BindCommand(ControllerButton::ButtonX, new DuckCommand());
 	input.BindCommand(ControllerButton::ButtonY, new FartCommand());
-	input.BindCommand(ControllerButton::ButtonRB, new JumpCommand());
-	input.BindCommand(ControllerButton::ButtonLB, new FireCommand());
-	input.BindCommand(ControllerButton::ButtonRT, new DuckCommand());
-	input.BindCommand(ControllerButton::ButtonLT, new FartCommand());
-	input.BindCommand(ControllerButton::ButtonUP, new KillQbertCommand(qbert));
-	input.BindCommand(ControllerButton::ButtonLEFT, new AddPointsCommand(qbert));
-	input.BindCommand(ControllerButton::ButtonDOWN, new KillQbertCommand(qbert2));
-	input.BindCommand(ControllerButton::ButtonRIGHT, new AddPointsCommand(qbert2));
+	input.BindCommand(ControllerButton::ButtonRB, new KillQbertCommand(qbert));
+	input.BindCommand(ControllerButton::ButtonLB, new AddPointsCommand(qbert));
+	input.BindCommand(ControllerButton::ButtonRT, new KillQbertCommand(qbert2));
+	input.BindCommand(ControllerButton::ButtonLT, new AddPointsCommand(qbert2));
+
 	input.BindCommand(ControllerButton::ButtonSTART, new ToggleMuteCommand());
 
 	// Create Level
 	CreateLevel(scene, "../Data/Level1.txt");
+	// Create Player
+	CreatePlayer(scene);
 }
 
-void QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
+void qbert::QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 {
 	std::cout << "creating level...\n";
 
@@ -159,13 +159,11 @@ void QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 				// shift to right
 				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
 					start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f);
-				//go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f);
 			}
 			else
 			{
 				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
 					start.x + width * col, start.y + height * row * 3.f / 4.f);
-				//go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * col, start.y + height * row * 3.f / 4.f);
 			}
 			go->AddComponent(tileComponent);
 			m_Level[row][col] = go;
@@ -176,25 +174,38 @@ void QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 		col = 0;
 		row++;
 	}
-	//for (int r{}; r < 7; r++)
-	//{
-	//	for (int c{}; c < 7; c++)
-	//	{
-	//		auto go = new dae::GameObject();
-	//		auto tileComponent = new LevelTileComponent(go);
-	//		go->AddComponent(tileComponent);
-	//		tileComponent->SetTile("../Data/Tile1.png");
-	//		level[r][c] = go;
-	//		scene.Add(go);
-	//		if ((r + 1) % 2 == 0)
-	//		{
-	//			// shift to right
-	//			go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * c + width / 2.f, start.y + height * r * 3.f / 4.f);
-	//		}
-	//		else
-	//		{
-	//			go->GetComponentByType<LevelTileComponent>()->SetPosition(start.x + width * c, start.y + height * r * 3.f / 4.f);
-	//		}
-	//	}
-	//}
+}
+void qbert::QbertGame::CreatePlayer(dae::Scene& scene)
+{
+	using namespace dae;
+	auto qbert = new GameObject();
+	RenderComponent* renderComponent = new RenderComponent(qbert);
+	qbert->AddComponent(renderComponent);
+	renderComponent->SetTexture("Qbert.png");
+	renderComponent->SetWidth(30);
+	renderComponent->SetHeight(32);
+	renderComponent->SetPosition(20, -20);
+
+	qbert::MovementComponent* movementComponent = new MovementComponent(qbert, this);
+	qbert->AddComponent(movementComponent);
+	// set qbert on the top
+	qbert->GetTransform()->SetPosition(GetTopOfLevel()->GetTransform()->GetPosition());
+
+	scene.Add(qbert);
+
+	//auto& input = InputManager::GetInstance();
+	//create binds
+	/*input.BindCommand(ControllerButton::ButtonUP, );
+	input.BindCommand(ControllerButton::ButtonLEFT, );
+	input.BindCommand(ControllerButton::ButtonDOWN, );
+	input.BindCommand(ControllerButton::ButtonRIGHT, );*/
+}
+
+dae::GameObject* qbert::QbertGame::GetTile(int row, int col)
+{
+	return m_Level[row][col];
+}
+dae::GameObject* qbert::QbertGame::GetTopOfLevel()
+{
+	return m_Level[0][3];
 }

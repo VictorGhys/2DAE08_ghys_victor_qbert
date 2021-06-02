@@ -18,15 +18,17 @@ void dae::RenderComponent::Render() const
 {
 	if (m_pTexture != nullptr)
 	{
-		//const auto pos = GetOwner()->GetTransform().GetPosition();
+		const auto pos = GetOwner()->GetTransform()->GetPosition() + m_Transform.GetPosition();
 		//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 		if (m_CustomWidthHeight)
 		{
-			Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y, m_Width, m_Height);
+			//Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y, m_Width, m_Height);
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y, m_Width, m_Height);
 		}
 		else
 		{
-			Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y);
+			//Renderer::GetInstance().RenderTexture(*m_pTexture, m_Transform.GetPosition().x, m_Transform.GetPosition().y);
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 		}
 	}
 }

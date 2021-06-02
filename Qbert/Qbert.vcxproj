@@ -340,6 +340,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
   <ItemGroup>
     <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="LevelTileComponent.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="PointsDisplayComponent.cpp" />
     <ClCompile Include="Qbert.cpp" />
     <ClCompile Include="QbertComponent.cpp" />
@@ -349,6 +350,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
   <ItemGroup>
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="LevelTileComponent.h" />
+    <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PointsDisplayComponent.h" />
     <ClInclude Include="QbertCommands.h" />
     <ClInclude Include="QbertComponent.h" />

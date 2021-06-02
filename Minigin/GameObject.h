@@ -9,11 +9,11 @@ namespace dae
 	{
 	public:
 		void Update();
-		
+
 		template <typename ComponentType>
 		ComponentType* GetComponentByType() const
 		{
-			auto compIt = std::find_if(m_Components.begin(), m_Components.end(), 
+			auto compIt = std::find_if(m_Components.begin(), m_Components.end(),
 				[](Component* pComp)
 				{
 					return dynamic_cast<const ComponentType*>(pComp) != nullptr;
@@ -45,13 +45,13 @@ namespace dae
 			}
 			return result;
 		}
-		
+
 		void SetPosition(float x, float y);
 		void AddComponent(Component* pComponent);
-		Transform GetTransform() const;
-		void SetTransform(const Transform& transform);
-		
-		GameObject() = default;
+		Transform* GetTransform() const;
+		//void SetTransform(const Transform& transform);
+
+		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -59,7 +59,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_Transform;
+		Transform* m_pTransform;
 		std::vector<Component*> m_Components;
 	};
 }

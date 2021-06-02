@@ -49,5 +49,7 @@ void LevelTileComponent::SetTile(const std::string& filename)
 }
 void LevelTileComponent::SetPosition(const float x, const float y)
 {
-	m_Tile->SetPosition(x, y);
+	//m_Tile->SetPosition(x, y);
+
+	m_pOwner->GetTransform()->SetPosition(x, y, 0);
 }
