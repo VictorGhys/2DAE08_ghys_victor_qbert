@@ -5,9 +5,10 @@
 #include "TextComponent.h"
 #include "QbertComponent.h"
 
-qbert::HealthDisplayComponent::HealthDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font)
+qbert::HealthDisplayComponent::HealthDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font, const std::string& header)
 	:Component(pOwner),
-	m_pTextComponent(new dae::TextComponent(pOwner, text, font))
+	m_pTextComponent(new dae::TextComponent(pOwner, text, font)),
+	m_Header(header)
 {
 	pOwner->AddComponent(m_pTextComponent);
 	if (m_Player != nullptr)
@@ -20,7 +21,7 @@ qbert::HealthDisplayComponent::~HealthDisplayComponent()
 }
 void qbert::HealthDisplayComponent::Died()
 {
-	m_pTextComponent->SetText(std::to_string(m_Player->GetHealth()));
+	SetHealth(std::to_string(m_Player->GetHealth()));
 }
 void qbert::HealthDisplayComponent::SetQbert(QbertComponent* qbert)
 {
@@ -33,7 +34,7 @@ void qbert::HealthDisplayComponent::SetQbert(QbertComponent* qbert)
 	{
 		m_Player->AddObserver(this);
 	}
-	m_pTextComponent->SetText(std::to_string(m_Player->GetHealth()));
+	SetHealth(std::to_string(m_Player->GetHealth()));
 }
 
 void qbert::HealthDisplayComponent::Update()
@@ -43,4 +44,8 @@ void qbert::HealthDisplayComponent::Update()
 void qbert::HealthDisplayComponent::SetPosition(const float x, const float y)
 {
 	m_pTextComponent->SetPosition(x, y);
+}
+void qbert::HealthDisplayComponent::SetHealth(const std::string& text)
+{
+	m_pTextComponent->SetText(m_Header + text);
 }

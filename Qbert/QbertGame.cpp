@@ -56,17 +56,18 @@ void qbert::QbertGame::LoadGame()
 	go->GetComponentByType<RenderComponent>()->SetPosition(216, 180);
 	scene.Add(go);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go = new GameObject();
-	auto textComponent = new TextComponent(go, "Programming 4 Assignment", font);
-	go->AddComponent(textComponent);
-	textComponent->SetPosition(80, 20);
-	//go->SetPosition(80, 20);
-	scene.Add(go);
+	//auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//go = new GameObject();
+	//auto textComponent = new TextComponent(go, "Programming 4 Assignment", font);
+	//go->AddComponent(textComponent);
+	//textComponent->SetPosition(80, 20);
+	////go->SetPosition(80, 20);
+	//scene.Add(go);
 
+	// FPS
 	go = new GameObject();
-	font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	go->AddComponent(new FPSComponent(go, "Programming 4 Assignment", font));
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	go->AddComponent(new FPSComponent(go, "fps", font));
 	go->SetPosition(0, 0);
 	scene.Add(go);
 
@@ -86,28 +87,28 @@ void qbert::QbertGame::LoadGame()
 	auto pointsDisplayComponent = new PointsDisplayComponent(go, "", font);
 	m_Qbert->AddComponent(pointsDisplayComponent);
 	pointsDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent->SetPosition(300, 400);
+	pointsDisplayComponent->SetPosition(0, 30);
 	scene.Add(go);
 
 	go = new GameObject();
-	auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font);
+	auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font, "Points2: ");
 	qbert2->AddComponent(pointsDisplayComponent2);
 	pointsDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent2->SetPosition(350, 400);
+	pointsDisplayComponent2->SetPosition(0, 60);
 	scene.Add(go);
 
 	go = new GameObject();
 	auto healthDisplayComponent = new HealthDisplayComponent(go, "", font);
 	m_Qbert->AddComponent(healthDisplayComponent);
 	healthDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	healthDisplayComponent->SetPosition(0, 400);
+	healthDisplayComponent->SetPosition(0, 90);
 	scene.Add(go);
 
 	go = new GameObject();
-	auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font);
+	auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font, "Lives2: ");
 	qbert2->AddComponent(healthDisplayComponent2);
 	healthDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
-	healthDisplayComponent2->SetPosition(30, 400);
+	healthDisplayComponent2->SetPosition(0, 110);
 	scene.Add(go);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));

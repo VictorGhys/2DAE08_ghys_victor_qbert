@@ -5,9 +5,10 @@
 #include "QbertComponent.h"
 #include "TextComponent.h"
 
-qbert::PointsDisplayComponent::PointsDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font)
+qbert::PointsDisplayComponent::PointsDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font, const std::string& header)
 	:Component(pOwner),
-	m_pTextComponent(new dae::TextComponent(pOwner, text, font))
+	m_pTextComponent(new dae::TextComponent(pOwner, text, font)),
+	m_Header(header)
 {
 	pOwner->AddComponent(m_pTextComponent);
 }
@@ -28,7 +29,7 @@ void qbert::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
 	{
 		m_Player->AddObserver(this);
 	}
-	m_pTextComponent->SetText(std::to_string(m_Points));
+	SetPoints(std::to_string(m_Points));
 }
 
 void qbert::PointsDisplayComponent::ChangedTile()
@@ -44,4 +45,8 @@ void qbert::PointsDisplayComponent::Update()
 void qbert::PointsDisplayComponent::SetPosition(const float x, const float y)
 {
 	m_pTextComponent->SetPosition(x, y);
+}
+void qbert::PointsDisplayComponent::SetPoints(const std::string& text)
+{
+	m_pTextComponent->SetText(m_Header + text);
 }
