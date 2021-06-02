@@ -27,8 +27,8 @@ namespace qbert
 		void MoveLeft();
 		void MoveRight();
 
-		int m_PosRow{};
-		int m_PosCol{};
+		int m_PosRow;
+		int m_PosCol;
 		qbert::QbertGame* m_QbertGame;
 	};
 }

@@ -21,6 +21,6 @@ namespace qbert
 	private:
 		const static  int m_LevelRows{ 7 };
 		const static  int m_LevelCols{ 7 };
-		dae::GameObject* m_Level[m_LevelRows][m_LevelCols];
+		dae::GameObject* m_Level[m_LevelRows][m_LevelCols]{ nullptr };
 	};
 }

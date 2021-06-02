@@ -5,6 +5,7 @@
 #include <Xinput.h>
 #include "Command.h"
 #include "Singleton.h"
+#include "../3rdParty/SDL2/include/SDL_keycode.h"
 
 namespace dae
 {
@@ -40,11 +41,12 @@ namespace dae
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button) const;
 		void BindCommand(ControllerButton button, Command* command);
+		//void BindCommand(const SDL_Keycode& keycode, Command* command);
 	private:
 		XINPUT_STATE m_CurrentState;
 		XINPUT_KEYSTROKE m_CurrentKeyStroke{};
 		using ControllerCommandsMap = std::map<ControllerButton, Command*>;
 		ControllerCommandsMap m_ConsoleCommands{};
-		WORD m_KeystrokeMode{XINPUT_KEYSTROKE_KEYDOWN};
+		WORD m_KeystrokeMode{ XINPUT_KEYSTROKE_KEYDOWN };
 	};
 }

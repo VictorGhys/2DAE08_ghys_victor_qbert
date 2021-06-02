@@ -193,17 +193,22 @@ void qbert::QbertGame::CreatePlayer(dae::Scene& scene)
 
 	scene.Add(qbert);
 
-	//auto& input = InputManager::GetInstance();
+	auto& input = InputManager::GetInstance();
 	//create binds
-	/*input.BindCommand(ControllerButton::ButtonUP, );
-	input.BindCommand(ControllerButton::ButtonLEFT, );
-	input.BindCommand(ControllerButton::ButtonDOWN, );
-	input.BindCommand(ControllerButton::ButtonRIGHT, );*/
+	input.BindCommand(ControllerButton::ButtonUP, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
+	input.BindCommand(ControllerButton::ButtonDOWN, new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
+	input.BindCommand(ControllerButton::ButtonLEFT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
+	input.BindCommand(ControllerButton::ButtonRIGHT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
+	//input.BindCommand('w', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 }
 
 dae::GameObject* qbert::QbertGame::GetTile(int row, int col)
 {
-	return m_Level[row][col];
+	if (row >= 0 && col >= 0 && row < m_LevelRows && col < m_LevelCols)
+	{
+		return m_Level[row][col];
+	}
+	return nullptr;
 }
 dae::GameObject* qbert::QbertGame::GetTopOfLevel()
 {

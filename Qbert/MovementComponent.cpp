@@ -6,7 +6,9 @@
 
 qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame)
 	:Component(pOwner),
-	m_QbertGame(qbertGame)
+	m_QbertGame(qbertGame),
+	m_PosRow(0),
+	m_PosCol(3)
 {
 }
 
@@ -31,8 +33,16 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 		MoveRight();
 		break;
 	}
-	auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
-	m_pOwner->GetTransform()->SetPosition(newPos);
+	auto newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
+	if (newTileToStandOn != nullptr)
+	{
+		auto newPos = newTileToStandOn->GetTransform()->GetPosition();
+		m_pOwner->GetTransform()->SetPosition(newPos);
+	}
+	else
+	{
+		std::cout << "qbert loses a life\n";
+	}
 }
 
 void qbert::MovementComponent::MoveUp()

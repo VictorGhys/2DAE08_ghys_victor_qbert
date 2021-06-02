@@ -5,6 +5,7 @@
 #include "QbertComponent.h"
 #include "ServiceLocator.h"
 #include "GameObject.h"
+#include "MovementComponent.h"
 
 class JumpCommand : public Command
 {
@@ -79,4 +80,22 @@ public:
 	virtual void Execute() override { ToggleMute(); };
 private:
 	void ToggleMute() { dae::ServiceLocator::GetSoundSystem().ToggleMute(); };
+};
+
+class MoveCommand : public Command
+{
+public:
+	MoveCommand(qbert::MovementComponent* movementComponent, qbert::MovementComponent::MoveDirection direction)
+		:m_MovementComponent(movementComponent),
+		m_Direction(direction)
+	{
+	}
+	virtual void Execute() override { Move(); }
+private:
+	void Move()
+	{
+		m_MovementComponent->Move(m_Direction);
+	}
+	qbert::MovementComponent* m_MovementComponent;
+	qbert::MovementComponent::MoveDirection m_Direction;
 };
