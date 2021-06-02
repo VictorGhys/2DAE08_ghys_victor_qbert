@@ -1,24 +1,22 @@
 #include "MiniginPCH.h"
 #include "PointsDisplayComponent.h"
 
-
 #include "GameObject.h"
 #include "QbertComponent.h"
 #include "TextComponent.h"
 
-dae::PointsDisplayComponent::PointsDisplayComponent(GameObject* pOwner, const std::string& text, const std::shared_ptr<Font>& font)
+qbert::PointsDisplayComponent::PointsDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font)
 	:Component(pOwner),
-	m_pTextComponent(new TextComponent(pOwner, text, font))
+	m_pTextComponent(new dae::TextComponent(pOwner, text, font))
 {
 	pOwner->AddComponent(m_pTextComponent);
 }
 
-dae::PointsDisplayComponent::~PointsDisplayComponent()
+qbert::PointsDisplayComponent::~PointsDisplayComponent()
 {
-	
 }
 
-void dae::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
+void qbert::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
 {
 	if (m_Player != nullptr)
 	{
@@ -33,19 +31,17 @@ void dae::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
 	m_pTextComponent->SetText(std::to_string(m_Points));
 }
 
-void dae::PointsDisplayComponent::ChangedTile()
+void qbert::PointsDisplayComponent::ChangedTile()
 {
 	m_Points += 25;
 	m_pTextComponent->SetText(std::to_string(m_Points));
-
 }
 
-void dae::PointsDisplayComponent::Update()
+void qbert::PointsDisplayComponent::Update()
 {
-
 }
 
-void dae::PointsDisplayComponent::SetPosition(const float x, const float y)
+void qbert::PointsDisplayComponent::SetPosition(const float x, const float y)
 {
 	m_pTextComponent->SetPosition(x, y);
 }

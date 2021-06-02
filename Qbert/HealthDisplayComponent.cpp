@@ -1,14 +1,13 @@
 #include "MiniginPCH.h"
 #include "HealthDisplayComponent.h"
 
-
 #include "GameObject.h"
 #include "TextComponent.h"
 #include "QbertComponent.h"
 
-dae::HealthDisplayComponent::HealthDisplayComponent(GameObject* pOwner, const std::string& text, const std::shared_ptr<Font>& font)
+qbert::HealthDisplayComponent::HealthDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font)
 	:Component(pOwner),
-	m_pTextComponent(new TextComponent(pOwner, text, font))
+	m_pTextComponent(new dae::TextComponent(pOwner, text, font))
 {
 	pOwner->AddComponent(m_pTextComponent);
 	if (m_Player != nullptr)
@@ -16,15 +15,14 @@ dae::HealthDisplayComponent::HealthDisplayComponent(GameObject* pOwner, const st
 		m_Player->AddObserver(this);
 	}
 }
-dae::HealthDisplayComponent::~HealthDisplayComponent()
+qbert::HealthDisplayComponent::~HealthDisplayComponent()
 {
-	
 }
-void dae::HealthDisplayComponent::Died()
+void qbert::HealthDisplayComponent::Died()
 {
 	m_pTextComponent->SetText(std::to_string(m_Player->GetHealth()));
 }
-void dae::HealthDisplayComponent::SetQbert(QbertComponent* qbert)
+void qbert::HealthDisplayComponent::SetQbert(QbertComponent* qbert)
 {
 	if (m_Player != nullptr)
 	{
@@ -38,12 +36,11 @@ void dae::HealthDisplayComponent::SetQbert(QbertComponent* qbert)
 	m_pTextComponent->SetText(std::to_string(m_Player->GetHealth()));
 }
 
-void dae::HealthDisplayComponent::Update()
+void qbert::HealthDisplayComponent::Update()
 {
-	
 }
 
-void dae::HealthDisplayComponent::SetPosition(const float x, const float y)
+void qbert::HealthDisplayComponent::SetPosition(const float x, const float y)
 {
 	m_pTextComponent->SetPosition(x, y);
 }

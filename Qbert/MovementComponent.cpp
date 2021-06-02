@@ -2,13 +2,16 @@
 #include "MovementComponent.h"
 
 #include "GameObject.h"
+#include "LevelTileComponent.h"
 #include "QbertGame.h"
+#include "QbertComponent.h"
 
-qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame)
+qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame, glm::ivec2 spawnPos)
 	:Component(pOwner),
 	m_QbertGame(qbertGame),
 	m_PosRow(0),
-	m_PosCol(3)
+	m_PosCol(3),
+	m_SpawnPos(spawnPos)
 {
 }
 
@@ -34,14 +37,20 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 		break;
 	}
 	auto newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
-	if (newTileToStandOn != nullptr)
+	if (newTileToStandOn != nullptr && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() != LevelTileComponent::TileType::DEATH)
 	{
+		if (newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
+		{
+			Respawn();
+		}
 		auto newPos = newTileToStandOn->GetTransform()->GetPosition();
 		m_pOwner->GetTransform()->SetPosition(newPos);
 	}
 	else
 	{
 		std::cout << "qbert loses a life\n";
+		Respawn();
+		m_pOwner->GetComponentByType<QbertComponent>()->Kill();
 	}
 }
 
@@ -95,4 +104,10 @@ void qbert::MovementComponent::MoveRight()
 		m_PosRow += 1;
 		m_PosCol += 1;
 	}
+}
+void qbert::MovementComponent::Respawn()
+{
+	m_PosRow = m_SpawnPos.x;
+	m_PosCol = m_SpawnPos.y;
+	m_QbertGame->SetQbertOnSpawnPos();
 }

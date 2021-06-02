@@ -1,6 +1,5 @@
 #pragma once
-namespace dae {
-	
+namespace qbert {
 	class QbertObserver
 	{
 	public:
@@ -9,4 +8,3 @@ namespace dae {
 		virtual void ChangedTile() = 0;
 	};
 }
-

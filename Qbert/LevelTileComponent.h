@@ -16,27 +16,29 @@ namespace dae {
 //#include <glm/glm.hpp>
 //#pragma warning(pop)
 //class GameObject;
-
-class LevelTileComponent : public dae::Component
+namespace qbert
 {
-public:
-	enum class TileType : char
+	class LevelTileComponent : public dae::Component
 	{
-		TILE = 'T',
-		DOUBLE_TILE = '2',
-		REVERTABLE = 'R',
-		DISK = 'D',
-		DEATH = '.'
+	public:
+		enum class TileType : char
+		{
+			TILE = 'T',
+			DOUBLE_TILE = '2',
+			REVERTABLE = 'R',
+			DISK = 'D',
+			DEATH = '.'
+		};
+		LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos);
+		~LevelTileComponent() override = default;
+
+		void Update() override;
+		void SetTile(const std::string& filename);
+		void SetPosition(const float x, const float y);
+		TileType GetTileType() const { return m_Type; }
+	private:
+		dae::RenderComponent* m_Tile;
+		TileType m_Type;
+		//glm::vec3 m_ActiveColor{ 255,255,255 };
 	};
-	LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos);
-	~LevelTileComponent() override = default;
-
-	void Update() override;
-	void SetTile(const std::string& filename);
-	void SetPosition(const float x, const float y);
-
-private:
-	dae::RenderComponent* m_Tile;
-	TileType m_Type;
-	//glm::vec3 m_ActiveColor{ 255,255,255 };
-};
+}

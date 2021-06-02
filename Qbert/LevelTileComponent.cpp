@@ -3,7 +3,7 @@
 #include "RenderComponent.h"
 #include "GameObject.h"
 
-LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos)
+qbert::LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos)
 	:Component(pOwner),
 	m_Tile(new dae::RenderComponent(pOwner)),
 	m_Type(type)
@@ -39,15 +39,15 @@ LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType type, f
 		break;
 	}
 }
-void LevelTileComponent::Update()
+void qbert::LevelTileComponent::Update()
 {
 }
 
-void LevelTileComponent::SetTile(const std::string& filename)
+void qbert::LevelTileComponent::SetTile(const std::string& filename)
 {
 	m_Tile->SetTexture(filename);
 }
-void LevelTileComponent::SetPosition(const float x, const float y)
+void qbert::LevelTileComponent::SetPosition(const float x, const float y)
 {
 	//m_Tile->SetPosition(x, y);
 
