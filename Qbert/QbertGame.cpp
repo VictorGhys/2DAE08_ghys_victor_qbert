@@ -20,6 +20,12 @@
 #include "SDL2SoundSystem.h"
 #include "ServiceLocator.h"
 
+qbert::QbertGame::QbertGame()
+	:m_Qbert(nullptr),
+	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert"))
+{
+}
+
 /**
  * Code constructing the scene world starts here
  */
@@ -27,7 +33,7 @@ void qbert::QbertGame::LoadGame()
 {
 	using namespace dae;
 	// best way to do this is to read it in from a file
-	auto& scene = SceneManager::GetInstance().CreateScene("Qbert");
+	//Scene& scene = SceneManager::GetInstance().CreateScene("Qbert");
 
 	/*auto go = std::make_shared<GameObject>();
 	go->SetTexture("background.jpg");
@@ -47,14 +53,14 @@ void qbert::QbertGame::LoadGame()
 	RenderComponent* renderComponent = new RenderComponent(go);
 	go->AddComponent(renderComponent);
 	go->GetComponentByType<RenderComponent>()->SetTexture("background.jpg");
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	go = new GameObject();
 	go->AddComponent(new RenderComponent(go));
 	go->GetComponentByType<RenderComponent>()->SetTexture("logo.png");
 	//go->SetPosition(216, 180);
 	go->GetComponentByType<RenderComponent>()->SetPosition(216, 180);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	//auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	//go = new GameObject();
@@ -69,47 +75,47 @@ void qbert::QbertGame::LoadGame()
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	go->AddComponent(new FPSComponent(go, "fps", font));
 	go->SetPosition(0, 0);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	// Create Level
-	CreateLevel(scene, "../Data/Level1.txt");
+	CreateLevel(m_Scene, "../Data/Level1.txt");
 
 	// Create Player
-	m_Qbert = CreatePlayer(scene);
+	m_Qbert = CreatePlayer(m_Scene);
 	// set qbert on the top
 	SetQbertOnSpawnPos();
 
 	auto qbert2 = new GameObject();
 	qbert2->AddComponent(new QbertComponent(qbert2));
-	scene.Add(qbert2);
+	m_Scene.Add(qbert2);
 
 	go = new GameObject();
 	auto pointsDisplayComponent = new PointsDisplayComponent(go, "", font);
 	m_Qbert->AddComponent(pointsDisplayComponent);
 	pointsDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
 	pointsDisplayComponent->SetPosition(0, 30);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	go = new GameObject();
 	auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font, "Points2: ");
 	qbert2->AddComponent(pointsDisplayComponent2);
 	pointsDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
 	pointsDisplayComponent2->SetPosition(0, 60);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	go = new GameObject();
 	auto healthDisplayComponent = new HealthDisplayComponent(go, "", font);
 	m_Qbert->AddComponent(healthDisplayComponent);
 	healthDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
 	healthDisplayComponent->SetPosition(0, 90);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	go = new GameObject();
 	auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font, "Lives2: ");
 	qbert2->AddComponent(healthDisplayComponent2);
 	healthDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
 	healthDisplayComponent2->SetPosition(0, 110);
-	scene.Add(go);
+	m_Scene.Add(go);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
@@ -222,4 +228,10 @@ dae::GameObject* qbert::QbertGame::GetTopOfLevel()
 void qbert::QbertGame::SetQbertOnSpawnPos()
 {
 	m_Qbert->GetTransform()->SetPosition(GetTopOfLevel()->GetTransform()->GetPosition());
+}
+void qbert::QbertGame::RemoveDisk(int row, int col)
+{
+	m_Scene.Remove(m_Level[row][col]);
+	delete m_Level[row][col];
+	m_Level[row][col] = nullptr;
 }

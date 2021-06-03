@@ -21,10 +21,17 @@ void Scene::Add(GameObject* pObject)
 {
 	m_Objects.push_back(pObject);
 }
+void Scene::Remove(GameObject* object)
+{
+	auto It = std::find(m_Objects.begin(), m_Objects.end(), object);
+	if (It == m_Objects.end())
+		return;
+	m_Objects.erase(It);
+}
 
 void Scene::Update()
 {
-	for(auto& object : m_Objects)
+	for (auto& object : m_Objects)
 	{
 		object->Update();
 	}
@@ -47,4 +54,3 @@ void Scene::Render() const
 		}
 	}
 }
-

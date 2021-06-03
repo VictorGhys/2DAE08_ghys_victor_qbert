@@ -39,12 +39,13 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 	auto newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 	if (newTileToStandOn != nullptr && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() != LevelTileComponent::TileType::DEATH)
 	{
-		if (newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
-		{
-			Respawn();
-		}
 		auto newPos = newTileToStandOn->GetTransform()->GetPosition();
 		m_pOwner->GetTransform()->SetPosition(newPos);
+		if (newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
+		{
+			m_QbertGame->RemoveDisk(m_PosRow, m_PosCol);
+			Respawn();
+		}
 	}
 	else
 	{
