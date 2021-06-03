@@ -271,6 +271,9 @@ void qbert::QbertGame::LoadNextLevel()
 	CreateLevel("../Data/Level" + std::to_string(m_CurrentLevel) + ".txt");
 
 	m_Qbert->GetComponentByType<MovementComponent>()->Respawn();
+	// to put qbert on the foreground
+	m_Scene.Remove(m_Qbert);
+	m_Scene.Add(m_Qbert);
 }
 void qbert::QbertGame::CheckLevelCompleted()
 {
