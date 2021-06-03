@@ -267,7 +267,7 @@ void qbert::QbertGame::LoadNextLevel()
 	{
 		for (int c{}; c < m_LevelCols; ++c)
 		{
-			if (m_Level[r][c]->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
+			if (m_Level[r][c] != nullptr && m_Level[r][c]->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
 			{
 				m_Qbert->GetComponentByType<QbertComponent>()->RemainingDisk();
 			}

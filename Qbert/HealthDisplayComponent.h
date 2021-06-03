@@ -21,6 +21,8 @@ namespace qbert
 		void SetQbert(QbertComponent* qbert);
 		void ChangedTile() override {}
 		void RemainingDisk() override {}
+		void DefeatCoily() override {}
+		void CatchSlickOrSlam() override {}
 		void Died() override;
 	private:
 		void SetHealth(const std::string& text) const;

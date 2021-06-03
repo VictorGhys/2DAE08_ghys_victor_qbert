@@ -42,6 +42,18 @@ void qbert::PointsDisplayComponent::RemainingDisk()
 	SetPoints(std::to_string(m_Points));
 }
 
+void qbert::PointsDisplayComponent::DefeatCoily()
+{
+	m_Points += 500;
+	SetPoints(std::to_string(m_Points));
+}
+
+void qbert::PointsDisplayComponent::CatchSlickOrSlam()
+{
+	m_Points += 300;
+	SetPoints(std::to_string(m_Points));
+}
+
 void qbert::PointsDisplayComponent::Update()
 {
 }
