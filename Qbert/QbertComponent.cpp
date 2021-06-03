@@ -10,9 +10,7 @@ qbert::QbertComponent::QbertComponent(dae::GameObject* pOwner)
 	m_Health(3)
 {
 }
-qbert::QbertComponent::~QbertComponent()
-{
-}
+
 void qbert::QbertComponent::Update()
 {
 }
@@ -20,7 +18,7 @@ void qbert::QbertComponent::Update()
 void qbert::QbertComponent::Kill()
 {
 	m_Health -= 1;
-	std::cout << "qbert died\n";
+	std::cout << "qbert lost a live\n";
 	for (auto observer : m_Observers)
 	{
 		observer->Died();
@@ -33,6 +31,15 @@ void qbert::QbertComponent::ChangeTile()
 		observer->ChangedTile();
 	}
 }
+
+void qbert::QbertComponent::RemainingDisk()
+{
+	for (auto observer : m_Observers)
+	{
+		observer->RemainingDisk();
+	}
+}
+
 void qbert::QbertComponent::AddObserver(qbert::QbertObserver* observer)
 {
 	m_Observers.push_back(observer);

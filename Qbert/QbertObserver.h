@@ -6,5 +6,6 @@ namespace qbert {
 		virtual ~QbertObserver() = default;
 		virtual void Died() = 0;
 		virtual void ChangedTile() = 0;
+		virtual void RemainingDisk() = 0;
 	};
 }

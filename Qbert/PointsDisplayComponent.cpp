@@ -8,13 +8,11 @@
 qbert::PointsDisplayComponent::PointsDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font, const std::string& header)
 	:Component(pOwner),
 	m_pTextComponent(new dae::TextComponent(pOwner, text, font)),
-	m_Header(header)
+	m_Header(header),
+	m_Player(),
+	m_Points()
 {
 	pOwner->AddComponent(m_pTextComponent);
-}
-
-qbert::PointsDisplayComponent::~PointsDisplayComponent()
-{
 }
 
 void qbert::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
@@ -35,18 +33,24 @@ void qbert::PointsDisplayComponent::SetQbert(QbertComponent* qbert)
 void qbert::PointsDisplayComponent::ChangedTile()
 {
 	m_Points += 25;
-	m_pTextComponent->SetText(std::to_string(m_Points));
+	SetPoints(std::to_string(m_Points));
+}
+
+void qbert::PointsDisplayComponent::RemainingDisk()
+{
+	m_Points += 50;
+	SetPoints(std::to_string(m_Points));
 }
 
 void qbert::PointsDisplayComponent::Update()
 {
 }
 
-void qbert::PointsDisplayComponent::SetPosition(const float x, const float y)
+void qbert::PointsDisplayComponent::SetPosition(const float x, const float y) const
 {
 	m_pTextComponent->SetPosition(x, y);
 }
-void qbert::PointsDisplayComponent::SetPoints(const std::string& text)
+void qbert::PointsDisplayComponent::SetPoints(const std::string& text) const
 {
 	m_pTextComponent->SetText(m_Header + text);
 }

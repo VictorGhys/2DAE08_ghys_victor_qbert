@@ -2,19 +2,18 @@
 #include "LevelTileComponent.h"
 #include "RenderComponent.h"
 #include "GameObject.h"
-#include "QbertGame.h"
+#include "QbertComponent.h"
 
 int qbert::LevelTileComponent::m_ActiveTiles = 0;
 
-qbert::LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos)
+qbert::LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos, QbertComponent* qbertComponent)
 	:Component(pOwner),
 	m_Tile(new dae::RenderComponent(pOwner)),
-	m_Type(type)
+	m_Type(type),
+	m_ActiveLevel(),
+	m_ActiveLevels({ "../Data/Tile1.png", "../Data/Tile2.png", "../Data/Tile3.png" }),
+	m_QbertComponent(qbertComponent)
 {
-	m_ActiveLevels.push_back("../Data/Tile1.png");
-	m_ActiveLevels.push_back("../Data/Tile2.png");
-	m_ActiveLevels.push_back("../Data/Tile3.png");
-
 	pOwner->AddComponent(m_Tile);
 	SetPosition(xpos, ypos);
 
@@ -70,6 +69,7 @@ void qbert::LevelTileComponent::ChangeColor()
 			m_ActiveLevel++;
 			m_Tile->SetTexture(m_ActiveLevels.at(m_ActiveLevel));
 			m_ActiveTiles++;
+			m_QbertComponent->ChangeTile();
 		}
 		break;
 	case TileType::DOUBLE_TILE:
@@ -78,6 +78,7 @@ void qbert::LevelTileComponent::ChangeColor()
 			m_ActiveLevel++;
 			m_Tile->SetTexture(m_ActiveLevels.at(m_ActiveLevel));
 			m_ActiveTiles++;
+			m_QbertComponent->ChangeTile();
 		}
 		break;
 	case TileType::REVERTABLE:
@@ -85,6 +86,7 @@ void qbert::LevelTileComponent::ChangeColor()
 		{
 			m_ActiveLevel++;
 			m_ActiveTiles++;
+			m_QbertComponent->ChangeTile();
 		}
 		else
 		{

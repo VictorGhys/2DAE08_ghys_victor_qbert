@@ -50,9 +50,10 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 	}
 	else
 	{
-		std::cout << "qbert loses a life\n";
+		// qbert loses a life
 		Respawn();
 		m_pOwner->GetComponentByType<QbertComponent>()->Kill();
+		newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 	}
 	newTileToStandOn->GetComponentByType<LevelTileComponent>()->ChangeColor();
 }

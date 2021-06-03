@@ -18,6 +18,8 @@ namespace dae {
 //class GameObject;
 namespace qbert
 {
+	class QbertComponent;
+
 	class LevelTileComponent : public dae::Component
 	{
 	public:
@@ -29,7 +31,7 @@ namespace qbert
 			DISK = 'D',
 			DEATH = '.'
 		};
-		LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos);
+		LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos, QbertComponent* qbertComponent);
 		~LevelTileComponent() override = default;
 
 		void Update() override;
@@ -43,5 +45,6 @@ namespace qbert
 		TileType m_Type;
 		int m_ActiveLevel;
 		std::vector<std::string> m_ActiveLevels;
+		QbertComponent* m_QbertComponent;
 	};
 }

@@ -9,11 +9,12 @@ namespace qbert
 	{
 	public:
 		QbertComponent(dae::GameObject* pOwner);
-		~QbertComponent();
+		~QbertComponent() = default;
 		void Kill();
 		void Update() override;
 		int GetHealth() const;
 		void ChangeTile();
+		void RemainingDisk();
 		void AddObserver(QbertObserver* observer);
 		void RemoveObserver(QbertObserver* observer);
 

@@ -15,14 +15,15 @@ namespace qbert
 	{
 	public:
 		HealthDisplayComponent(dae::GameObject* pOwner, const std::string& text, const std::shared_ptr<dae::Font>& font, const std::string& header = "Lives: ");
-		~HealthDisplayComponent();
+		~HealthDisplayComponent() = default;
 		void Update() override;
-		void SetPosition(float x, float y);
+		void SetPosition(float x, float y) const;
 		void SetQbert(QbertComponent* qbert);
-		void ChangedTile() override {};
+		void ChangedTile() override {}
+		void RemainingDisk() override {}
 		void Died() override;
 	private:
-		void SetHealth(const std::string& text);
+		void SetHealth(const std::string& text) const;
 		dae::TextComponent* m_pTextComponent;
 		QbertComponent* m_Player;
 		std::string m_Header;

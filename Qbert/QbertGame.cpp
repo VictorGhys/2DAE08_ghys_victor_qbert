@@ -90,13 +90,17 @@ void qbert::QbertGame::LoadGame()
 	go->SetPosition(0, 0);
 	m_Scene.Add(go);
 
+	// Create Player
+	m_Qbert = CreatePlayer();
+
 	// Create Level
 	CreateLevel("../Data/Level1.txt");
 
-	// Create Player
-	m_Qbert = CreatePlayer();
-	// set qbert on the top
+	// set qbert on the top of the level
 	SetQbertOnSpawnPos();
+	// put qbert on the foreground
+	m_Scene.Remove(m_Qbert);
+	m_Scene.Add(m_Qbert);
 
 	auto qbert2 = new GameObject();
 	qbert2->AddComponent(new QbertComponent(qbert2));
@@ -167,6 +171,7 @@ void qbert::QbertGame::CreateLevel(const std::string& path)
 	std::string line;
 	int row{};
 	int col{};
+	QbertComponent* qbertComponent = m_Qbert->GetComponentByType<QbertComponent>();
 	while (std::getline(levelInput, line))
 	{
 		for (auto character : line)
@@ -177,12 +182,12 @@ void qbert::QbertGame::CreateLevel(const std::string& path)
 			{
 				// shift to right
 				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
-					start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f);
+					start.x + width * col + width / 2.f, start.y + height * row * 3.f / 4.f, qbertComponent);
 			}
 			else
 			{
 				tileComponent = new LevelTileComponent(go, static_cast<LevelTileComponent::TileType>(character),
-					start.x + width * col, start.y + height * row * 3.f / 4.f);
+					start.x + width * col, start.y + height * row * 3.f / 4.f, qbertComponent);
 			}
 			go->AddComponent(tileComponent);
 			m_Level[row][col] = go;
@@ -205,7 +210,7 @@ dae::GameObject* qbert::QbertGame::CreatePlayer()
 	renderComponent->SetHeight(32);
 	renderComponent->SetPosition(20, -20);
 
-	qbert::MovementComponent* movementComponent = new MovementComponent(qbert, this, { 0,3 });
+	MovementComponent* movementComponent = new MovementComponent(qbert, this, { 0,3 });
 	qbert->AddComponent(movementComponent);
 
 	qbert->AddComponent(new QbertComponent(qbert));
@@ -257,6 +262,17 @@ void qbert::QbertGame::LoadNextLevel()
 	{
 		m_TilesActiveToWin = m_TilesActiveToWinForLevels.at(m_CurrentLevel - 1);
 	}
+	// add points for every remaining disk in the level
+	for (int r{}; r < m_LevelRows; ++r)
+	{
+		for (int c{}; c < m_LevelCols; ++c)
+		{
+			if (m_Level[r][c]->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
+			{
+				m_Qbert->GetComponentByType<QbertComponent>()->RemainingDisk();
+			}
+		}
+	}
 	// delete old level
 	for (int r{}; r < m_LevelRows; ++r)
 	{
@@ -271,7 +287,7 @@ void qbert::QbertGame::LoadNextLevel()
 	CreateLevel("../Data/Level" + std::to_string(m_CurrentLevel) + ".txt");
 
 	m_Qbert->GetComponentByType<MovementComponent>()->Respawn();
-	// to put qbert on the foreground
+	// put qbert on the foreground
 	m_Scene.Remove(m_Qbert);
 	m_Scene.Add(m_Qbert);
 }
