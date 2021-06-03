@@ -24,8 +24,14 @@ int qbert::QbertGame::m_TilesActiveToWin = 28;
 
 qbert::QbertGame::QbertGame()
 	:m_Qbert(nullptr),
-	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert"))
+	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert")),
+	m_CurrentLevel(1),
+	m_MaxLevel(3)
 {
+}
+void qbert::QbertGame::Update()
+{
+	CheckLevelCompleted();
 }
 
 /**
@@ -50,6 +56,11 @@ void qbert::QbertGame::LoadGame()
 	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
 	to->SetPosition(80, 20);
 	scene.Add(to);*/
+	m_Scene.SetGame(this);
+
+	m_TilesActiveToWinForLevels.push_back(28);
+	m_TilesActiveToWinForLevels.push_back(56);
+	m_TilesActiveToWinForLevels.push_back(28);
 
 	auto go = new GameObject();
 	RenderComponent* renderComponent = new RenderComponent(go);
@@ -241,4 +252,38 @@ void qbert::QbertGame::LoadNextLevel()
 {
 	std::cout << "Loading next level\n";
 	m_CurrentLevel++;
+	LevelTileComponent::m_ActiveTiles = 0;
+	if (m_CurrentLevel == 2)
+	{
+		m_TilesActiveToWin = m_TilesActiveToWinForLevels.at(m_CurrentLevel - 1);
+	}
+	// delete old level
+	for (int r{}; r < m_LevelRows; ++r)
+	{
+		for (int c{}; c < m_LevelCols; ++c)
+		{
+			m_Scene.Remove(m_Level[r][c]);
+			delete m_Level[r][c];
+			m_Level[r][c] = nullptr;
+		}
+	}
+	// load new level
+	CreateLevel("../Data/Level" + std::to_string(m_CurrentLevel) + ".txt");
+
+	m_Qbert->GetComponentByType<MovementComponent>()->Respawn();
+}
+void qbert::QbertGame::CheckLevelCompleted()
+{
+	if (LevelTileComponent::m_ActiveTiles >= m_TilesActiveToWin)
+	{
+		if (m_CurrentLevel < m_MaxLevel)
+		{
+			LoadNextLevel();
+		}
+		else
+		{
+			//YOU WON!
+			std::cout << "YOU WON!\n";
+		}
+	}
 }

@@ -3,6 +3,7 @@
 
 namespace dae
 {
+	class Game;
 	class GameObject;
 	class Scene
 	{
@@ -13,6 +14,8 @@ namespace dae
 
 		void Update();
 		void Render() const;
+
+		void SetGame(Game* game);
 
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;
@@ -27,5 +30,6 @@ namespace dae
 		std::vector < GameObject*> m_Objects{};
 
 		static unsigned int m_IdCounter;
+		Game* m_Game;
 	};
 }

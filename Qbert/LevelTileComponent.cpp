@@ -96,8 +96,4 @@ void qbert::LevelTileComponent::ChangeColor()
 	default:
 		break;
 	}
-
-	if (m_ActiveTiles >= QbertGame::m_TilesActiveToWin)
-	{
-	}
 }

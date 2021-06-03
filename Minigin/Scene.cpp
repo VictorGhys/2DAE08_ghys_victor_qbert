@@ -1,5 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
+
+#include "Game.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
 
@@ -35,6 +37,7 @@ void Scene::Update()
 	{
 		object->Update();
 	}
+	m_Game->Update();
 }
 
 void Scene::Render() const
@@ -53,4 +56,8 @@ void Scene::Render() const
 			renderComponent->Render();
 		}
 	}
+}
+void Scene::SetGame(Game* game)
+{
+	m_Game = game;
 }
