@@ -33,12 +33,15 @@ namespace qbert
 		~LevelTileComponent() override = default;
 
 		void Update() override;
-		void SetTile(const std::string& filename);
-		void SetPosition(const float x, const float y);
+		void SetTile(const std::string& filename) const;
+		void SetPosition(float x, float y) const;
 		TileType GetTileType() const { return m_Type; }
+		void ChangeColor();
+		static int m_ActiveTiles;
 	private:
 		dae::RenderComponent* m_Tile;
 		TileType m_Type;
-		//glm::vec3 m_ActiveColor{ 255,255,255 };
+		int m_ActiveLevel;
+		std::vector<std::string> m_ActiveLevels;
 	};
 }

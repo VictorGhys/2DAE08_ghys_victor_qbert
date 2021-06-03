@@ -20,6 +20,8 @@
 #include "SDL2SoundSystem.h"
 #include "ServiceLocator.h"
 
+int qbert::QbertGame::m_TilesActiveToWin = 28;
+
 qbert::QbertGame::QbertGame()
 	:m_Qbert(nullptr),
 	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert"))
@@ -78,10 +80,10 @@ void qbert::QbertGame::LoadGame()
 	m_Scene.Add(go);
 
 	// Create Level
-	CreateLevel(m_Scene, "../Data/Level1.txt");
+	CreateLevel("../Data/Level1.txt");
 
 	// Create Player
-	m_Qbert = CreatePlayer(m_Scene);
+	m_Qbert = CreatePlayer();
 	// set qbert on the top
 	SetQbertOnSpawnPos();
 
@@ -135,7 +137,7 @@ void qbert::QbertGame::LoadGame()
 	input.BindCommand(ControllerButton::ButtonSTART, new ToggleMuteCommand());
 }
 
-void qbert::QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
+void qbert::QbertGame::CreateLevel(const std::string& path)
 {
 	std::cout << "creating level...\n";
 
@@ -173,7 +175,7 @@ void qbert::QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 			}
 			go->AddComponent(tileComponent);
 			m_Level[row][col] = go;
-			scene.Add(go);
+			m_Scene.Add(go);
 
 			col++;
 		}
@@ -181,7 +183,7 @@ void qbert::QbertGame::CreateLevel(dae::Scene& scene, const std::string& path)
 		row++;
 	}
 }
-dae::GameObject* qbert::QbertGame::CreatePlayer(dae::Scene& scene)
+dae::GameObject* qbert::QbertGame::CreatePlayer()
 {
 	using namespace dae;
 	auto qbert = new GameObject();
@@ -197,7 +199,7 @@ dae::GameObject* qbert::QbertGame::CreatePlayer(dae::Scene& scene)
 
 	qbert->AddComponent(new QbertComponent(qbert));
 
-	scene.Add(qbert);
+	m_Scene.Add(qbert);
 
 	auto& input = InputManager::GetInstance();
 	//create controller binds
@@ -234,4 +236,9 @@ void qbert::QbertGame::RemoveDisk(int row, int col)
 	m_Scene.Remove(m_Level[row][col]);
 	delete m_Level[row][col];
 	m_Level[row][col] = nullptr;
+}
+void qbert::QbertGame::LoadNextLevel()
+{
+	std::cout << "Loading next level\n";
+	m_CurrentLevel++;
 }

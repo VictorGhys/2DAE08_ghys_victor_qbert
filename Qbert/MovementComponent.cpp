@@ -45,6 +45,7 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 		{
 			m_QbertGame->RemoveDisk(m_PosRow, m_PosCol);
 			Respawn();
+			newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 		}
 	}
 	else
@@ -53,6 +54,7 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 		Respawn();
 		m_pOwner->GetComponentByType<QbertComponent>()->Kill();
 	}
+	newTileToStandOn->GetComponentByType<LevelTileComponent>()->ChangeColor();
 }
 
 void qbert::MovementComponent::MoveUp()
