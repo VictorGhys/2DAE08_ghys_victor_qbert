@@ -33,6 +33,11 @@ qbert::QbertGame::QbertGame()
 void qbert::QbertGame::Update()
 {
 	CheckLevelCompleted();
+	for (auto object : m_GameObjectsToDestroy)
+	{
+		m_Scene.Destroy(object);
+	}
+	m_GameObjectsToDestroy.clear();
 }
 
 /**
@@ -314,8 +319,9 @@ void qbert::QbertGame::CheckLevelCompleted()
 		}
 	}
 }
-//
-//void qbert::QbertGame::Destroy(dae::GameObject* object)
-//{
-//	m_Scene.Destroy(object);
-//}
+
+void qbert::QbertGame::Destroy(dae::GameObject* object)
+{
+	//m_Scene.Destroy(object);
+	m_GameObjectsToDestroy.push_back(object);
+}

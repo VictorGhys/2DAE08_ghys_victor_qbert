@@ -48,5 +48,5 @@ void qbert::UggOrWrongWayComponent::DoNextMove()
 void qbert::UggOrWrongWayComponent::Kill()
 {
 	std::cout << "ugg died\n";
-	//m_MovementComponent->GetQbertGame()->Destroy(m_pOwner);
+	m_MovementComponent->GetQbertGame()->Destroy(m_pOwner);
 }

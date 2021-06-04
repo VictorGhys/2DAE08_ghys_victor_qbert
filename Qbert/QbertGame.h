@@ -22,7 +22,7 @@ namespace qbert
 		void RemoveDisk(int row, int col);
 		void LoadNextLevel();
 		static int m_TilesActiveToWin;
-		//void Destroy(dae::GameObject* object);
+		void Destroy(dae::GameObject* object);
 	private:
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer();
@@ -36,5 +36,6 @@ namespace qbert
 		int m_CurrentLevel;
 		const int m_MaxLevel;
 		std::vector<int> m_TilesActiveToWinForLevels;
+		std::vector<dae::GameObject*> m_GameObjectsToDestroy;
 	};
 }

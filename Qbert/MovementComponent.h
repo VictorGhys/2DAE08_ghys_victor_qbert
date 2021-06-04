@@ -28,7 +28,7 @@ namespace qbert
 		void Update() override;
 		void Move(MoveDirection direction, bool changeColor, bool canTakeDisk);
 		void Respawn();
-		//QbertGame* GetQbertGame() const { return m_QbertGame; }
+		QbertGame* GetQbertGame() const { return m_QbertGame; }
 	private:
 		void MoveUp();
 		void MoveDown();
