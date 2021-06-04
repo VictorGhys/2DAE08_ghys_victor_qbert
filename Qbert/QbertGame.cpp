@@ -20,6 +20,7 @@
 #include "SDL2SoundSystem.h"
 //#include "ServiceLocator.h"
 #include "EnemyFactory.h"
+#include "GameTime.h"
 #include "UggOrWrongWayComponent.h"
 
 int qbert::QbertGame::m_TilesActiveToWin = 28;
@@ -28,12 +29,15 @@ qbert::QbertGame::QbertGame()
 	:m_Qbert(nullptr),
 	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert")),
 	m_CurrentLevel(1),
-	m_MaxLevel(3)
+	m_MaxLevel(3),
+	m_CollisionTime(),
+	m_CollisionIntervalTime(1)
 {
 }
 void qbert::QbertGame::Update()
 {
 	CheckLevelCompleted();
+	CollisionCheck();
 	for (auto object : m_GameObjectsToDestroy)
 	{
 		m_Scene.Destroy(object);
@@ -140,8 +144,11 @@ void qbert::QbertGame::LoadGame()
 	m_Scene.Add(go);
 
 	auto ugg = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::UGG, this);
-
 	m_Scene.Add(ugg);
+	m_Enemies.push_back(ugg);
+	auto wrongway = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::WRONGWAY, this);
+	m_Scene.Add(wrongway);
+	m_Enemies.push_back(wrongway);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
@@ -296,6 +303,7 @@ void qbert::QbertGame::LoadNextLevel()
 	m_Scene.Remove(m_Qbert);
 	m_Scene.Add(m_Qbert);
 }
+
 void qbert::QbertGame::CheckLevelCompleted()
 {
 	if (LevelTileComponent::m_ActiveTiles >= m_TilesActiveToWin)
@@ -312,8 +320,36 @@ void qbert::QbertGame::CheckLevelCompleted()
 	}
 }
 
+void qbert::QbertGame::CollisionCheck()
+{
+	m_CollisionTime += dae::GameTime::GetInstance()->GetDeltaTime();
+	if (m_CollisionTime >= m_CollisionIntervalTime)
+	{
+		m_CollisionTime -= m_CollisionIntervalTime;
+
+		dae::GameObject* qbertStandOnTile = m_Qbert->GetComponentByType<MovementComponent>()->GetTileStandingOn();
+		auto It = std::find_if(m_Enemies.begin(), m_Enemies.end(), [&qbertStandOnTile](dae::GameObject* enemy)
+			{
+				return enemy->GetComponentByType<MovementComponent>()->GetTileStandingOn() == qbertStandOnTile;
+			});
+		if (It != m_Enemies.end())
+		{
+			// there is collision
+			(*It)->GetComponentByType<EnemyComponent>()->CollisionWithPlayer(m_Qbert);
+		}
+	}
+}
+
 void qbert::QbertGame::Destroy(dae::GameObject* object)
 {
-	//m_Scene.Destroy(object);
 	m_GameObjectsToDestroy.push_back(object);
+
+	auto It = std::find_if(m_Enemies.begin(), m_Enemies.end(), [&object](dae::GameObject* enemy)
+		{
+			return enemy == object;
+		});
+	if (It != m_Enemies.end())
+	{
+		m_Enemies.erase(It);
+	}
 }

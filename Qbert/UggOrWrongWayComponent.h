@@ -12,6 +12,7 @@ namespace qbert
 		UggOrWrongWayComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent, bool leftToRight);
 		void DoNextMove() override;
 		void Kill() override;
+		void CollisionWithPlayer(dae::GameObject* player) override;
 	private:
 		bool m_LeftToRight;
 	};

@@ -20,6 +20,7 @@ namespace qbert
 		};
 		EnemyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent);
 		void Update() override;
+		virtual void CollisionWithPlayer(dae::GameObject* player) = 0;
 	protected:
 		virtual void DoNextMove() = 0;
 		MovementComponent* m_MovementComponent;

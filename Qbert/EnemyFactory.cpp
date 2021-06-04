@@ -49,7 +49,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 6,0 });
 		enemy->AddComponent(movementComponent);
 
-		wrongwayComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::WRONGWAY, movementComponent, false);
+		wrongwayComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::WRONGWAY, movementComponent, true);
 		enemy->AddComponent(wrongwayComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
@@ -57,7 +57,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		renderComponent->SetTexture("../Data/Wrong-Way.png");
 		renderComponent->SetWidth(34);
 		renderComponent->SetHeight(32);
-		renderComponent->SetPosition(45, 35);
+		renderComponent->SetPosition(-10, 35);
 		break;
 
 	case EnemyComponent::EnemyType::SLICK:

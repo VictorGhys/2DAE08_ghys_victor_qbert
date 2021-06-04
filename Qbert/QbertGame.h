@@ -1,6 +1,8 @@
 #pragma once
 #include "../Minigin/Game.h"
 //#include "Scene.h"
+#include <string>
+#include <vector>
 
 namespace dae {
 	class Scene;
@@ -27,6 +29,7 @@ namespace qbert
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer();
 		void CheckLevelCompleted();
+		void CollisionCheck();
 
 		const static  int m_LevelRows{ 7 };
 		const static  int m_LevelCols{ 7 };
@@ -37,5 +40,8 @@ namespace qbert
 		const int m_MaxLevel;
 		std::vector<int> m_TilesActiveToWinForLevels;
 		std::vector<dae::GameObject*> m_GameObjectsToDestroy;
+		std::vector<dae::GameObject*> m_Enemies;
+		float m_CollisionTime;
+		const float m_CollisionIntervalTime;
 	};
 }
