@@ -19,22 +19,28 @@ namespace qbert
 			UP,
 			DOWN,
 			LEFT,
-			RIGHT
+			RIGHT,
+			SIDEWAYS_LEFT,
+			SIDEWAYS_RIGHT,
 		};
 		MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame, glm::ivec2 spawnPos);
 
 		void Update() override;
-		void Move(MoveDirection direction);
+		void Move(MoveDirection direction, bool changeColor, bool canTakeDisk);
 		void Respawn();
+		//QbertGame* GetQbertGame() const { return m_QbertGame; }
 	private:
 		void MoveUp();
 		void MoveDown();
 		void MoveLeft();
 		void MoveRight();
+		void MoveSidewaysLeft();
+		void MoveSidewaysRight();
 
 		int m_PosRow;
 		int m_PosCol;
 		qbert::QbertGame* m_QbertGame;
 		glm::ivec2 m_SpawnPos;
+		bool m_IsSpawned;
 	};
 }

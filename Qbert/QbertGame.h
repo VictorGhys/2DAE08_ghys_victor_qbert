@@ -1,8 +1,9 @@
 #pragma once
 #include "../Minigin/Game.h"
-#include "Scene.h"
+//#include "Scene.h"
 
 namespace dae {
+	class Scene;
 	class GameObject;
 }
 
@@ -18,11 +19,10 @@ namespace qbert
 
 		dae::GameObject* GetTile(int row, int col);
 		dae::GameObject* GetTopOfLevel();
-		void SetQbertOnSpawnPos();
 		void RemoveDisk(int row, int col);
 		void LoadNextLevel();
 		static int m_TilesActiveToWin;
-
+		//void Destroy(dae::GameObject* object);
 	private:
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer();

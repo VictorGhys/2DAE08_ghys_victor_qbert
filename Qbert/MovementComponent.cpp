@@ -5,21 +5,28 @@
 #include "LevelTileComponent.h"
 #include "QbertGame.h"
 #include "QbertComponent.h"
+#include "UggOrWrongWayComponent.h"
 
 qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame, glm::ivec2 spawnPos)
 	:Component(pOwner),
 	m_QbertGame(qbertGame),
-	m_PosRow(0),
-	m_PosCol(3),
-	m_SpawnPos(spawnPos)
+	m_PosRow(spawnPos.x),
+	m_PosCol(spawnPos.y),
+	m_SpawnPos(spawnPos),
+	m_IsSpawned(false)
 {
 }
 
 void qbert::MovementComponent::Update()
 {
+	if (!m_IsSpawned)
+	{
+		Respawn();
+		m_IsSpawned = true;
+	}
 }
 
-void qbert::MovementComponent::Move(MoveDirection direction)
+void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, bool canTakeDisk)
 {
 	switch (direction)
 	{
@@ -35,13 +42,19 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 	case MoveDirection::RIGHT:
 		MoveRight();
 		break;
+	case MoveDirection::SIDEWAYS_LEFT:
+		MoveSidewaysLeft();
+		break;
+	case MoveDirection::SIDEWAYS_RIGHT:
+		MoveSidewaysRight();
+		break;
 	}
 	auto newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 	if (newTileToStandOn != nullptr && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() != LevelTileComponent::TileType::DEATH)
 	{
 		auto newPos = newTileToStandOn->GetTransform()->GetPosition();
 		m_pOwner->GetTransform()->SetPosition(newPos);
-		if (newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
+		if (canTakeDisk && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
 		{
 			m_QbertGame->RemoveDisk(m_PosRow, m_PosCol);
 			Respawn();
@@ -50,12 +63,20 @@ void qbert::MovementComponent::Move(MoveDirection direction)
 	}
 	else
 	{
-		// qbert loses a life
+		// loses a life
 		Respawn();
-		m_pOwner->GetComponentByType<QbertComponent>()->Kill();
+
+		auto healthComponent = m_pOwner->GetComponentByType<HealthComponent>();
+		if (healthComponent)
+		{
+			healthComponent->Kill();
+		}
 		newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 	}
-	newTileToStandOn->GetComponentByType<LevelTileComponent>()->ChangeColor();
+	if (changeColor)
+	{
+		newTileToStandOn->GetComponentByType<LevelTileComponent>()->ChangeColor();
+	}
 }
 
 void qbert::MovementComponent::MoveUp()
@@ -109,9 +130,18 @@ void qbert::MovementComponent::MoveRight()
 		m_PosCol += 1;
 	}
 }
+void qbert::MovementComponent::MoveSidewaysLeft()
+{
+	m_PosCol -= 1;
+}
+void qbert::MovementComponent::MoveSidewaysRight()
+{
+	m_PosCol += 1;
+}
 void qbert::MovementComponent::Respawn()
 {
 	m_PosRow = m_SpawnPos.x;
 	m_PosCol = m_SpawnPos.y;
-	m_QbertGame->SetQbertOnSpawnPos();
+	auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
+	m_pOwner->GetTransform()->SetPosition(newPos);
 }

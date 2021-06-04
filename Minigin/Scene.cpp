@@ -61,3 +61,9 @@ void Scene::SetGame(Game* game)
 {
 	m_Game = game;
 }
+void Scene::Destroy(GameObject* object)
+{
+	Remove(object);
+	delete object;
+	object = nullptr;
+}

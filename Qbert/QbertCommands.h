@@ -96,7 +96,7 @@ namespace qbert
 	private:
 		void Move()
 		{
-			m_MovementComponent->Move(m_Direction);
+			m_MovementComponent->Move(m_Direction, true, true);
 		}
 		qbert::MovementComponent* m_MovementComponent;
 		qbert::MovementComponent::MoveDirection m_Direction;

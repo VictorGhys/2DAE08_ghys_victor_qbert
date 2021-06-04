@@ -7,7 +7,7 @@
 
 qbert::QbertComponent::QbertComponent(dae::GameObject* pOwner)
 	:Component(pOwner),
-	m_Health(3)
+	HealthComponent(3)
 {
 }
 
@@ -47,9 +47,4 @@ void qbert::QbertComponent::AddObserver(qbert::QbertObserver* observer)
 void qbert::QbertComponent::RemoveObserver(qbert::QbertObserver* observer)
 {
 	m_Observers.erase(std::remove(m_Observers.begin(), m_Observers.end(), observer), m_Observers.end());
-}
-
-int qbert::QbertComponent::GetHealth() const
-{
-	return m_Health;
 }

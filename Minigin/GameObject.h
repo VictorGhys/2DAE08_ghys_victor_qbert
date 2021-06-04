@@ -22,7 +22,7 @@ namespace dae
 			{
 				return nullptr;
 			}
-			return static_cast<ComponentType*>(*compIt);
+			return dynamic_cast<ComponentType*>(*compIt);
 		}
 		template <typename ComponentType>
 		std::vector<ComponentType*> GetComponentsByType() const

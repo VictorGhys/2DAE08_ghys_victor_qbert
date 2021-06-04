@@ -18,7 +18,8 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "SDL2SoundSystem.h"
-#include "ServiceLocator.h"
+//#include "ServiceLocator.h"
+#include "UggOrWrongWayComponent.h"
 
 int qbert::QbertGame::m_TilesActiveToWin = 28;
 
@@ -96,8 +97,6 @@ void qbert::QbertGame::LoadGame()
 	// Create Level
 	CreateLevel("../Data/Level1.txt");
 
-	// set qbert on the top of the level
-	SetQbertOnSpawnPos();
 	// put qbert on the foreground
 	m_Scene.Remove(m_Qbert);
 	m_Scene.Add(m_Qbert);
@@ -133,6 +132,19 @@ void qbert::QbertGame::LoadGame()
 	healthDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
 	healthDisplayComponent2->SetPosition(0, 110);
 	m_Scene.Add(go);
+
+	auto ugg = new GameObject();
+	auto movementComponent = new MovementComponent(ugg, this, { 6,6 });
+	ugg->AddComponent(movementComponent);
+	auto uggComponent = new UggOrWrongWayComponent(ugg, EnemyComponent::EnemyType::UGG_WRONGWAY, movementComponent, false);
+	ugg->AddComponent(uggComponent);
+	renderComponent = new RenderComponent(ugg);
+	ugg->AddComponent(renderComponent);
+	renderComponent->SetTexture("../Data/Ugg.png");
+	renderComponent->SetWidth(34);
+	renderComponent->SetHeight(32);
+	renderComponent->SetPosition(45, 35);
+	m_Scene.Add(ugg);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
@@ -208,7 +220,7 @@ dae::GameObject* qbert::QbertGame::CreatePlayer()
 	renderComponent->SetTexture("Qbert.png");
 	renderComponent->SetWidth(30);
 	renderComponent->SetHeight(32);
-	renderComponent->SetPosition(20, -20);
+	renderComponent->SetPosition(20, -15);
 
 	MovementComponent* movementComponent = new MovementComponent(qbert, this, { 0,3 });
 	qbert->AddComponent(movementComponent);
@@ -242,10 +254,6 @@ dae::GameObject* qbert::QbertGame::GetTile(int row, int col)
 dae::GameObject* qbert::QbertGame::GetTopOfLevel()
 {
 	return m_Level[0][3];
-}
-void qbert::QbertGame::SetQbertOnSpawnPos()
-{
-	m_Qbert->GetTransform()->SetPosition(GetTopOfLevel()->GetTransform()->GetPosition());
 }
 void qbert::QbertGame::RemoveDisk(int row, int col)
 {
@@ -306,3 +314,8 @@ void qbert::QbertGame::CheckLevelCompleted()
 		}
 	}
 }
+//
+//void qbert::QbertGame::Destroy(dae::GameObject* object)
+//{
+//	m_Scene.Destroy(object);
+//}

@@ -338,6 +338,8 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnemyComponent.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="LevelTileComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -346,8 +348,11 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     <ClCompile Include="QbertComponent.cpp" />
     <ClCompile Include="QbertGame.cpp" />
     <ClCompile Include="QbertObserver.cpp" />
+    <ClCompile Include="UggOrWrongWayComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="LevelTileComponent.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -356,6 +361,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     <ClInclude Include="QbertComponent.h" />
     <ClInclude Include="QbertGame.h" />
     <ClInclude Include="QbertObserver.h" />
+    <ClInclude Include="UggOrWrongWayComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

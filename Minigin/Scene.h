@@ -11,6 +11,7 @@ namespace dae
 	public:
 		void Add(GameObject* object);
 		void Remove(GameObject* object);
+		void Destroy(GameObject* object);
 
 		void Update();
 		void Render() const;
