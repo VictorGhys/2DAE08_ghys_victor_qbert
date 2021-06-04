@@ -7,7 +7,7 @@
 #include "QbertComponent.h"
 #include "UggOrWrongWayComponent.h"
 
-qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame, glm::ivec2 spawnPos)
+qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos)
 	:Component(pOwner),
 	m_QbertGame(qbertGame),
 	m_PosRow(spawnPos.x),

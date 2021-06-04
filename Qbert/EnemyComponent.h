@@ -13,8 +13,10 @@ namespace qbert
 		enum class EnemyType
 		{
 			COILY,
-			UGG_WRONGWAY,
-			SLICK_SAM
+			UGG,
+			WRONGWAY,
+			SLICK,
+			SAM
 		};
 		EnemyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent);
 		void Update() override;

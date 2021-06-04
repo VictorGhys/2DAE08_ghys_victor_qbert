@@ -19,6 +19,7 @@
 #include "SceneManager.h"
 #include "SDL2SoundSystem.h"
 //#include "ServiceLocator.h"
+#include "EnemyFactory.h"
 #include "UggOrWrongWayComponent.h"
 
 int qbert::QbertGame::m_TilesActiveToWin = 28;
@@ -138,17 +139,8 @@ void qbert::QbertGame::LoadGame()
 	healthDisplayComponent2->SetPosition(0, 110);
 	m_Scene.Add(go);
 
-	auto ugg = new GameObject();
-	auto movementComponent = new MovementComponent(ugg, this, { 6,6 });
-	ugg->AddComponent(movementComponent);
-	auto uggComponent = new UggOrWrongWayComponent(ugg, EnemyComponent::EnemyType::UGG_WRONGWAY, movementComponent, false);
-	ugg->AddComponent(uggComponent);
-	renderComponent = new RenderComponent(ugg);
-	ugg->AddComponent(renderComponent);
-	renderComponent->SetTexture("../Data/Ugg.png");
-	renderComponent->SetWidth(34);
-	renderComponent->SetHeight(32);
-	renderComponent->SetPosition(45, 35);
+	auto ugg = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::UGG, this);
+
 	m_Scene.Add(ugg);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));

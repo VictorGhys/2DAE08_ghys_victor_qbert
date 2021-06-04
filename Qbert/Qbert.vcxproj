@@ -339,6 +339,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EnemyComponent.cpp" />
+    <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="LevelTileComponent.cpp" />
@@ -352,6 +353,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnemyComponent.h" />
+    <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="LevelTileComponent.h" />
