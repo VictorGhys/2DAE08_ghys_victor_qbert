@@ -40,6 +40,53 @@ void qbert::CoilyComponent::DoNextMove()
 	{
 		// hunt for qbert
 		std::cout << "hunting\n";
+		auto playerPos = m_Player->GetComponentByType<MovementComponent>()->GetPosRowCol();
+		auto coilyPos = m_MovementComponent->GetPosRowCol();
+		glm::ivec2 diff = playerPos - coilyPos;
+		if (diff.x <= 0)
+		{
+			// player is above or on same row
+			if (diff.y >= 0)
+			{
+				// player is to the right or same col
+				if (coilyPos.x % 2 == 0)
+				{
+					m_MovementComponent->Move(MovementComponent::MoveDirection::UP, false, false);
+				}
+				else
+				{
+					// because of crooked collumns go left if uneven row
+					m_MovementComponent->Move(MovementComponent::MoveDirection::LEFT, false, false);
+				}
+			}
+			else
+			{
+				// player is to the left
+				m_MovementComponent->Move(MovementComponent::MoveDirection::LEFT, false, false);
+			}
+		}
+		else
+		{
+			// player is below
+			if (diff.y >= 0)
+			{
+				// player is to the right or same col
+				if (coilyPos.x % 2 == 0)
+				{
+					m_MovementComponent->Move(MovementComponent::MoveDirection::RIGHT, false, false);
+				}
+				else
+				{
+					// because of crooked collumns go down if uneven row
+					m_MovementComponent->Move(MovementComponent::MoveDirection::DOWN, false, false);
+				}
+			}
+			else
+			{
+				// player is to the left
+				m_MovementComponent->Move(MovementComponent::MoveDirection::DOWN, false, false);
+			}
+		}
 	}
 }
 void qbert::CoilyComponent::Kill()

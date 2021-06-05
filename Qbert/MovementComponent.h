@@ -32,7 +32,8 @@ namespace qbert
 		void Respawn();
 		QbertGame* GetQbertGame() const { return m_QbertGame; }
 		dae::GameObject* GetTileStandingOn() const { return m_QbertGame->GetTile(m_PosRow, m_PosCol); }
-		bool IsOnLastRow();
+		bool IsOnLastRow() const;
+		glm::ivec2 GetPosRowCol() const;
 	private:
 		void MoveUp();
 		void MoveDown();

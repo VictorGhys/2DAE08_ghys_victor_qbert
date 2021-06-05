@@ -144,7 +144,11 @@ void qbert::MovementComponent::Respawn()
 	auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
 	m_pOwner->GetTransform()->SetPosition(newPos);
 }
-bool qbert::MovementComponent::IsOnLastRow()
+bool qbert::MovementComponent::IsOnLastRow() const
 {
 	return m_PosRow == QbertGame::m_LevelRows - 1;
+}
+glm::ivec2 qbert::MovementComponent::GetPosRowCol() const
+{
+	return glm::ivec2{ m_PosRow, m_PosCol };
 }
