@@ -7,16 +7,15 @@
 #include "QbertComponent.h"
 #include "QbertGame.h"
 
-qbert::UggOrWrongWayComponent::UggOrWrongWayComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent, bool leftToRight)
+qbert::UggOrWrongWayComponent::UggOrWrongWayComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent)
 	:EnemyComponent(pOwner, type, movementComponent),
-	HealthComponent(1),
-	m_LeftToRight(leftToRight)
+	HealthComponent(1)
 {
 }
 
 void qbert::UggOrWrongWayComponent::DoNextMove()
 {
-	if (m_LeftToRight)
+	if (m_Type == EnemyType::WRONGWAY)
 	{
 		// go left to right
 		if (rand() % 2 == 0)

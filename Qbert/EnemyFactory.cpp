@@ -2,6 +2,7 @@
 #include "EnemyFactory.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include "SlickOrSamComponent.h"
 #include "UggOrWrongWayComponent.h"
 
 dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type, QbertGame* qbertGame)
@@ -13,15 +14,15 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 	UggOrWrongWayComponent* CoilyComponent;
 	UggOrWrongWayComponent* uggComponent;
 	UggOrWrongWayComponent* wrongwayComponent;
-	UggOrWrongWayComponent* slickComponent;
-	UggOrWrongWayComponent* samComponent;
+	SlickOrSamComponent* slickComponent;
+	SlickOrSamComponent* samComponent;
 	switch (type)
 	{
 	case EnemyComponent::EnemyType::COILY:
 		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		CoilyComponent = new UggOrWrongWayComponent(enemy, type, movementComponent, false);
+		CoilyComponent = new UggOrWrongWayComponent(enemy, type, movementComponent);
 		enemy->AddComponent(CoilyComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
@@ -35,7 +36,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 6,6 });
 		enemy->AddComponent(movementComponent);
 
-		uggComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::UGG, movementComponent, false);
+		uggComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::UGG, movementComponent);
 		enemy->AddComponent(uggComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
@@ -49,7 +50,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 6,0 });
 		enemy->AddComponent(movementComponent);
 
-		wrongwayComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::WRONGWAY, movementComponent, true);
+		wrongwayComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::WRONGWAY, movementComponent);
 		enemy->AddComponent(wrongwayComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
@@ -61,32 +62,32 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		break;
 
 	case EnemyComponent::EnemyType::SLICK:
-		movementComponent = new MovementComponent(enemy, qbertGame, { 6,6 });
+		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		slickComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::SLICK, movementComponent, false);
+		slickComponent = new SlickOrSamComponent(enemy, EnemyComponent::EnemyType::SLICK, movementComponent);
 		enemy->AddComponent(slickComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
 		enemy->AddComponent(renderComponent);
 		renderComponent->SetTexture("../Data/Slick.png");
-		renderComponent->SetWidth(34);
+		renderComponent->SetWidth(24);
 		renderComponent->SetHeight(32);
-		renderComponent->SetPosition(45, 35);
+		renderComponent->SetPosition(20, -15);
 		break;
 	case EnemyComponent::EnemyType::SAM:
-		movementComponent = new MovementComponent(enemy, qbertGame, { 6,6 });
+		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		samComponent = new UggOrWrongWayComponent(enemy, EnemyComponent::EnemyType::SAM, movementComponent, false);
+		samComponent = new SlickOrSamComponent(enemy, EnemyComponent::EnemyType::SAM, movementComponent);
 		enemy->AddComponent(samComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
 		enemy->AddComponent(renderComponent);
 		renderComponent->SetTexture("../Data/Sam.png");
-		renderComponent->SetWidth(34);
+		renderComponent->SetWidth(22);
 		renderComponent->SetHeight(32);
-		renderComponent->SetPosition(45, 35);
+		renderComponent->SetPosition(20, -15);
 		break;
 	}
 	return enemy;

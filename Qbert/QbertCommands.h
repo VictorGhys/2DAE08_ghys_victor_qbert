@@ -71,7 +71,6 @@ namespace qbert
 		{
 			std::cout << "Add Points\n";
 			m_Qbert->GetComponentByType<qbert::QbertComponent>()->ChangeTile();
-			//qbert->SetPoints(qbert->GetPoints() + 1);
 		};
 		dae::GameObject* m_Qbert;
 	};

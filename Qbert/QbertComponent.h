@@ -14,6 +14,8 @@ namespace qbert
 		void Kill() override;
 		void Update() override;
 		void ChangeTile();
+		void DefeatCoily();
+		void CatchSlickOrSlam();
 		void RemainingDisk();
 		void AddObserver(QbertObserver* observer);
 		void RemoveObserver(QbertObserver* observer);

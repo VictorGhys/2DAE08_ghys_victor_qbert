@@ -349,6 +349,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     <ClCompile Include="QbertComponent.cpp" />
     <ClCompile Include="QbertGame.cpp" />
     <ClCompile Include="QbertObserver.cpp" />
+    <ClCompile Include="SlickOrSamComponent.cpp" />
     <ClCompile Include="UggOrWrongWayComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -363,6 +364,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     <ClInclude Include="QbertComponent.h" />
     <ClInclude Include="QbertGame.h" />
     <ClInclude Include="QbertObserver.h" />
+    <ClInclude Include="SlickOrSamComponent.h" />
     <ClInclude Include="UggOrWrongWayComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

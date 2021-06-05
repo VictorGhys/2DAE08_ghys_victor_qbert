@@ -68,6 +68,7 @@ void qbert::QbertGame::LoadGame()
 	to->SetPosition(80, 20);
 	scene.Add(to);*/
 	m_Scene.SetGame(this);
+	srand(static_cast<unsigned>(time(nullptr)));
 
 	m_TilesActiveToWinForLevels.push_back(28);
 	m_TilesActiveToWinForLevels.push_back(56);
@@ -143,12 +144,22 @@ void qbert::QbertGame::LoadGame()
 	healthDisplayComponent2->SetPosition(0, 110);
 	m_Scene.Add(go);
 
+	//UGG
 	auto ugg = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::UGG, this);
 	m_Scene.Add(ugg);
 	m_Enemies.push_back(ugg);
+	//WRONG-WAY
 	auto wrongway = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::WRONGWAY, this);
 	m_Scene.Add(wrongway);
 	m_Enemies.push_back(wrongway);
+	//SLICK
+	auto slick = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SLICK, this);
+	m_Scene.Add(slick);
+	m_Enemies.push_back(slick);
+	//SAM
+	auto sam = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SAM, this);
+	m_Scene.Add(sam);
+	m_Enemies.push_back(sam);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);

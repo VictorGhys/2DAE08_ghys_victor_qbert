@@ -24,8 +24,8 @@ namespace qbert
 	protected:
 		virtual void DoNextMove() = 0;
 		MovementComponent* m_MovementComponent;
-	private:
 		EnemyType m_Type;
+	private:
 
 		float m_MoveTime;
 		const float m_MoveIntervalTime;

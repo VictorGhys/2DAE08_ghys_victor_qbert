@@ -24,11 +24,28 @@ void qbert::QbertComponent::Kill()
 		observer->Died();
 	}
 }
+
 void qbert::QbertComponent::ChangeTile()
 {
 	for (auto observer : m_Observers)
 	{
 		observer->ChangedTile();
+	}
+}
+
+void qbert::QbertComponent::DefeatCoily()
+{
+	for (auto observer : m_Observers)
+	{
+		observer->DefeatCoily();
+	}
+}
+
+void qbert::QbertComponent::CatchSlickOrSlam()
+{
+	for (auto observer : m_Observers)
+	{
+		observer->CatchSlickOrSlam();
 	}
 }
 
