@@ -21,18 +21,21 @@ namespace qbert
 
 		dae::GameObject* GetTile(int row, int col);
 		dae::GameObject* GetTopOfLevel();
+		dae::GameObject* GetQbert() const { return m_Qbert; }
+
 		void RemoveDisk(int row, int col);
 		void LoadNextLevel();
 		static int m_TilesActiveToWin;
 		void Destroy(dae::GameObject* object);
+		const static int m_LevelRows{ 7 };
+		const static int m_LevelCols{ 7 };
+
 	private:
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer();
 		void CheckLevelCompleted();
 		void CollisionCheck();
 
-		const static  int m_LevelRows{ 7 };
-		const static  int m_LevelCols{ 7 };
 		dae::GameObject* m_Level[m_LevelRows][m_LevelCols]{ nullptr };
 		dae::GameObject* m_Qbert;
 		dae::Scene& m_Scene;

@@ -4,7 +4,7 @@
 
 namespace qbert
 {
-	class SlickOrSamComponent : public qbert::EnemyComponent, public qbert::HealthComponent
+	class SlickOrSamComponent : public EnemyComponent, public HealthComponent
 	{
 	public:
 		SlickOrSamComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent);

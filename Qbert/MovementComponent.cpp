@@ -4,7 +4,6 @@
 #include "GameObject.h"
 #include "LevelTileComponent.h"
 #include "QbertGame.h"
-#include "QbertComponent.h"
 #include "UggOrWrongWayComponent.h"
 
 qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos)
@@ -144,4 +143,8 @@ void qbert::MovementComponent::Respawn()
 	m_PosCol = m_SpawnPos.y;
 	auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
 	m_pOwner->GetTransform()->SetPosition(newPos);
+}
+bool qbert::MovementComponent::IsOnLastRow()
+{
+	return m_PosRow == QbertGame::m_LevelRows - 1;
 }

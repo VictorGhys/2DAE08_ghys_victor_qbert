@@ -160,6 +160,10 @@ void qbert::QbertGame::LoadGame()
 	auto sam = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SAM, this);
 	m_Scene.Add(sam);
 	m_Enemies.push_back(sam);
+	//Coily
+	auto coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
+	m_Scene.Add(coily);
+	m_Enemies.push_back(coily);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);

@@ -338,6 +338,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoilyComponent.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -353,6 +354,7 @@ xcopy "$(SolutionDir)$(PlatformTarget)\$(Configuration)\*.dll" "$(OutputPath)" /
     <ClCompile Include="UggOrWrongWayComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoilyComponent.h" />
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="HealthComponent.h" />

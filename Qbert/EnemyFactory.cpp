@@ -4,6 +4,7 @@
 #include "RenderComponent.h"
 #include "SlickOrSamComponent.h"
 #include "UggOrWrongWayComponent.h"
+#include "CoilyComponent.h"
 
 dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type, QbertGame* qbertGame)
 {
@@ -11,7 +12,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 	MovementComponent* movementComponent;
 	dae::RenderComponent* renderComponent;
 
-	UggOrWrongWayComponent* CoilyComponent;
+	CoilyComponent* CoilyComponent;
 	UggOrWrongWayComponent* uggComponent;
 	UggOrWrongWayComponent* wrongwayComponent;
 	SlickOrSamComponent* slickComponent;
@@ -22,15 +23,15 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		CoilyComponent = new UggOrWrongWayComponent(enemy, type, movementComponent);
+		CoilyComponent = new qbert::CoilyComponent(enemy, type, movementComponent, qbertGame->GetQbert());
 		enemy->AddComponent(CoilyComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);
 		enemy->AddComponent(renderComponent);
-		renderComponent->SetTexture("../Data/Coily.png");
-		renderComponent->SetWidth(34);
-		renderComponent->SetHeight(32);
-		renderComponent->SetPosition(45, 35);
+		renderComponent->SetTexture("../Data/CoilyEgg.png");
+		renderComponent->SetWidth(32);
+		renderComponent->SetHeight(26);
+		renderComponent->SetPosition(20, -15);
 		break;
 	case EnemyComponent::EnemyType::UGG:
 		movementComponent = new MovementComponent(enemy, qbertGame, { 6,6 });
