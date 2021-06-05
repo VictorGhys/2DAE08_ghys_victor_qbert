@@ -5,11 +5,12 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 
-qbert::CoilyComponent::CoilyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent, dae::GameObject* player)
+qbert::CoilyComponent::CoilyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent, dae::GameObject* player, QbertGame* qbertGame)
 	:EnemyComponent(pOwner, type, movementComponent),
 	HealthComponent(1),
 	m_Player(player),
-	m_IsInEggState(true)
+	m_IsInEggState(true),
+	m_QbertGame(qbertGame)
 {
 }
 void qbert::CoilyComponent::DoNextMove()
@@ -40,16 +41,17 @@ void qbert::CoilyComponent::DoNextMove()
 	{
 		// hunt for qbert
 		std::cout << "hunting\n";
-		auto playerPos = m_Player->GetComponentByType<MovementComponent>()->GetPosRowCol();
+		//auto playerPos = m_Player->GetComponentByType<MovementComponent>()->GetPosRowCol();
 		auto coilyPos = m_MovementComponent->GetPosRowCol();
-		glm::ivec2 diff = playerPos - coilyPos;
+		//glm::ivec2 diff = playerPos - coilyPos;
+		glm::ivec2 diff = m_QbertGame->GetQbertPosForCoily() - coilyPos;
 		if (diff.x <= 0)
 		{
 			// player is above or on same row
 			if (diff.y >= 0)
 			{
 				// player is to the right or same col
-				if (coilyPos.x % 2 == 0)
+				if (diff.y != 0 || coilyPos.x % 2 == 0)
 				{
 					m_MovementComponent->Move(MovementComponent::MoveDirection::UP, false, false);
 				}
@@ -71,7 +73,7 @@ void qbert::CoilyComponent::DoNextMove()
 			if (diff.y >= 0)
 			{
 				// player is to the right or same col
-				if (coilyPos.x % 2 == 0)
+				if (diff.y != 0 || coilyPos.x % 2 == 0)
 				{
 					m_MovementComponent->Move(MovementComponent::MoveDirection::RIGHT, false, false);
 				}

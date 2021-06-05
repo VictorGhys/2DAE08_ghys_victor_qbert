@@ -56,6 +56,8 @@ void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, b
 		if (canTakeDisk && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
 		{
 			m_QbertGame->RemoveDisk(m_PosRow, m_PosCol);
+			m_QbertGame->SetQbertHasTakenDisk(true);
+			m_QbertGame->SetQbertPosForCoily(glm::ivec2{ m_PosRow, m_PosCol });
 			Respawn();
 			newTileToStandOn = m_QbertGame->GetTile(m_PosRow, m_PosCol);
 		}

@@ -23,7 +23,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		CoilyComponent = new qbert::CoilyComponent(enemy, type, movementComponent, qbertGame->GetQbert());
+		CoilyComponent = new qbert::CoilyComponent(enemy, type, movementComponent, qbertGame->GetQbert(), qbertGame);
 		enemy->AddComponent(CoilyComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);

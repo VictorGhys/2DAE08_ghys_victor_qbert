@@ -4,6 +4,11 @@
 #include <string>
 #include <vector>
 
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/glm.hpp>
+#pragma warning(pop)
+
 namespace dae {
 	class Scene;
 	class GameObject;
@@ -29,7 +34,9 @@ namespace qbert
 		void Destroy(dae::GameObject* object);
 		const static int m_LevelRows{ 7 };
 		const static int m_LevelCols{ 7 };
-
+		glm::ivec2 GetQbertPosForCoily();
+		void SetQbertPosForCoily(glm::ivec2 qbertPos) { m_QbertLastPos = qbertPos; }
+		void SetQbertHasTakenDisk(bool hasTakenDisk) { m_QbertHasTakenDisk = hasTakenDisk; }
 	private:
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer();
@@ -46,5 +53,9 @@ namespace qbert
 		std::vector<dae::GameObject*> m_Enemies;
 		float m_CollisionTime;
 		const float m_CollisionIntervalTime;
+		glm::ivec2 m_QbertLastPos;
+		bool m_QbertHasTakenDisk;
+		const float m_MaxHasTakenDiskResetTime{ 4 };
+		float m_HasTakenDiskResetTime;
 	};
 }

@@ -1,10 +1,10 @@
 #pragma once
 #include <Component.h>
+#include "QbertGame.h"
+
 #pragma warning(push)
 #pragma warning (disable:4201)
 #include <glm/glm.hpp>
-
-#include "QbertGame.h"
 #pragma warning(pop)
 
 namespace qbert {

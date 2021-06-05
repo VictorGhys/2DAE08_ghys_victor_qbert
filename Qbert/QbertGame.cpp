@@ -31,18 +31,31 @@ qbert::QbertGame::QbertGame()
 	m_CurrentLevel(1),
 	m_MaxLevel(3),
 	m_CollisionTime(),
-	m_CollisionIntervalTime(1)
+	m_CollisionIntervalTime(1),
+	m_QbertHasTakenDisk(false),
+	m_HasTakenDiskResetTime()
 {
 }
 void qbert::QbertGame::Update()
 {
 	CheckLevelCompleted();
 	CollisionCheck();
+
+	// destroy the gameobjects
 	for (auto object : m_GameObjectsToDestroy)
 	{
 		m_Scene.Destroy(object);
 	}
 	m_GameObjectsToDestroy.clear();
+
+	// reset the qbertHasTakenDisk
+	if (m_QbertHasTakenDisk)
+		m_HasTakenDiskResetTime += dae::GameTime::GetInstance()->GetDeltaTime();
+	if (m_HasTakenDiskResetTime >= m_MaxHasTakenDiskResetTime)
+	{
+		m_HasTakenDiskResetTime = 0;
+		m_QbertHasTakenDisk = false;
+	}
 }
 
 /**
@@ -366,5 +379,18 @@ void qbert::QbertGame::Destroy(dae::GameObject* object)
 	if (It != m_Enemies.end())
 	{
 		m_Enemies.erase(It);
+	}
+}
+glm::ivec2 qbert::QbertGame::GetQbertPosForCoily()
+{
+	if (m_QbertHasTakenDisk)
+	{
+		// give the last pos so that coily jumps off the pyramid
+		return m_QbertLastPos;
+	}
+	else
+	{
+		// return the actual pos of qbert
+		return m_Qbert->GetComponentByType<MovementComponent>()->GetPosRowCol();
 	}
 }
