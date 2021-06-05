@@ -61,5 +61,7 @@ namespace qbert
 		const float m_MaxCoilySpawnTime{ 8 };
 		float m_CoilySpawnTime;
 		dae::GameObject* m_Coily;
+		const float m_MaxEnemySpawnTime{ 6 };
+		float m_EnemySpawnTime;
 	};
 }

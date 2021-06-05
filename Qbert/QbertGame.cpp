@@ -18,9 +18,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "SDL2SoundSystem.h"
-//#include "ServiceLocator.h"
 #include "EnemyFactory.h"
-#include "EnemySpawnerComponent.h"
 #include "GameTime.h"
 #include "UggOrWrongWayComponent.h"
 
@@ -70,6 +68,16 @@ void qbert::QbertGame::Update()
 			m_Enemies.push_back(m_Coily);
 			m_Scene.Add(m_Coily);
 		}
+	}
+	// Spawn enemies after a certain time
+	m_EnemySpawnTime += dae::GameTime::GetInstance()->GetDeltaTime();
+	if (m_EnemySpawnTime >= m_MaxEnemySpawnTime)
+	{
+		m_EnemySpawnTime = 0;
+		auto randomType = static_cast<EnemyComponent::EnemyType>((rand() % 4) + 1);
+		auto enemy = EnemyFactory::CreateEnemy(randomType, this);
+		m_Enemies.push_back(enemy);
+		m_Scene.Add(enemy);
 	}
 }
 
@@ -172,31 +180,26 @@ void qbert::QbertGame::LoadGame()
 	healthDisplayComponent2->SetPosition(0, 110);
 	m_Scene.Add(go);
 
-	//UGG
-	auto ugg = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::UGG, this);
-	m_Scene.Add(ugg);
-	m_Enemies.push_back(ugg);
-	//WRONG-WAY
-	auto wrongway = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::WRONGWAY, this);
-	m_Scene.Add(wrongway);
-	m_Enemies.push_back(wrongway);
-	//SLICK
-	auto slick = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SLICK, this);
-	m_Scene.Add(slick);
-	m_Enemies.push_back(slick);
-	//SAM
-	auto sam = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SAM, this);
-	m_Scene.Add(sam);
-	m_Enemies.push_back(sam);
+	////UGG
+	//auto ugg = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::UGG, this);
+	//m_Scene.Add(ugg);
+	//m_Enemies.push_back(ugg);
+	////WRONG-WAY
+	//auto wrongway = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::WRONGWAY, this);
+	//m_Scene.Add(wrongway);
+	//m_Enemies.push_back(wrongway);
+	////SLICK
+	//auto slick = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SLICK, this);
+	//m_Scene.Add(slick);
+	//m_Enemies.push_back(slick);
+	////SAM
+	//auto sam = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::SAM, this);
+	//m_Scene.Add(sam);
+	//m_Enemies.push_back(sam);
 	//Coily
 	/*auto coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
 	m_Scene.Add(coily);
 	m_Enemies.push_back(coily);*/
-
-	//auto enemySpawner = new GameObject();
-	//auto enemySpawnerComponent = new EnemySpawnerComponent(enemySpawner, this);
-	//enemySpawner->AddComponent(enemySpawnerComponent);
-	//m_Scene.Add(enemySpawner);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
@@ -333,6 +336,15 @@ void qbert::QbertGame::LoadNextLevel()
 			}
 		}
 	}
+	// remove all the enemies
+	for (auto enemy : m_Enemies)
+	{
+		Destroy(enemy);
+	}
+	m_Enemies.clear();
+	// reset spawn timers
+	m_CoilySpawnTime = 0;
+	m_EnemySpawnTime = 0;
 	// delete old level
 	for (int r{}; r < m_LevelRows; ++r)
 	{
