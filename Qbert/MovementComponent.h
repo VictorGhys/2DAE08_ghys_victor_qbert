@@ -28,7 +28,7 @@ namespace qbert
 		MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos);
 
 		void Update() override;
-		void Move(MoveDirection direction, bool changeColor, bool canTakeDisk);
+		void Move(MoveDirection direction, bool changeColor = false, bool canTakeDisk = false, bool revertColor = false);
 		void Respawn();
 		QbertGame* GetQbertGame() const { return m_QbertGame; }
 		dae::GameObject* GetTileStandingOn() const;

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "GameObject.h"
+#include "GameTime.h"
 #include "QbertComponent.h"
 #include "QbertGame.h"
 
@@ -53,5 +54,14 @@ void qbert::UggOrWrongWayComponent::Kill()
 
 void qbert::UggOrWrongWayComponent::CollisionWithPlayer(dae::GameObject* player)
 {
-	player->GetComponentByType<QbertComponent>()->Kill();
+	if (m_PlayerCollisionCooldown >= m_MaxPlayerCollisionCooldown)
+	{
+		m_PlayerCollisionCooldown = 0;
+		player->GetComponentByType<QbertComponent>()->Kill();
+	}
+}
+
+void qbert::UggOrWrongWayComponent::UpdateTimers()
+{
+	m_PlayerCollisionCooldown += dae::GameTime::GetInstance()->GetDeltaTime();
 }

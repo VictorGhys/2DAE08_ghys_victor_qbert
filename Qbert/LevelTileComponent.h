@@ -39,6 +39,7 @@ namespace qbert
 		void SetPosition(float x, float y) const;
 		TileType GetTileType() const { return m_Type; }
 		void ChangeColor();
+		void RevertColor();
 		static int m_ActiveTiles;
 	private:
 		dae::RenderComponent* m_Tile;

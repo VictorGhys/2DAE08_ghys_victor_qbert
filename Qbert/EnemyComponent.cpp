@@ -19,4 +19,8 @@ void qbert::EnemyComponent::Update()
 		m_MoveTime -= m_MoveIntervalTime;
 		DoNextMove();
 	}
+	UpdateTimers();
+}
+void qbert::EnemyComponent::UpdateTimers()
+{
 }

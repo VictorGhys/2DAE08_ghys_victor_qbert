@@ -382,21 +382,15 @@ void qbert::QbertGame::CheckLevelCompleted()
 
 void qbert::QbertGame::CollisionCheck()
 {
-	m_CollisionTime += dae::GameTime::GetInstance()->GetDeltaTime();
-	if (m_CollisionTime >= m_CollisionIntervalTime)
-	{
-		m_CollisionTime -= m_CollisionIntervalTime;
-
-		dae::GameObject* qbertStandOnTile = m_Qbert->GetComponentByType<MovementComponent>()->GetTileStandingOn();
-		auto It = std::find_if(m_Enemies.begin(), m_Enemies.end(), [&qbertStandOnTile](dae::GameObject* enemy)
-			{
-				return enemy->GetComponentByType<MovementComponent>()->GetTileStandingOn() == qbertStandOnTile;
-			});
-		if (It != m_Enemies.end())
+	dae::GameObject* qbertStandOnTile = m_Qbert->GetComponentByType<MovementComponent>()->GetTileStandingOn();
+	auto It = std::find_if(m_Enemies.begin(), m_Enemies.end(), [&qbertStandOnTile](dae::GameObject* enemy)
 		{
-			// there is collision
-			(*It)->GetComponentByType<EnemyComponent>()->CollisionWithPlayer(m_Qbert);
-		}
+			return enemy->GetComponentByType<MovementComponent>()->GetTileStandingOn() == qbertStandOnTile;
+		});
+	if (It != m_Enemies.end())
+	{
+		// there is collision
+		(*It)->GetComponentByType<EnemyComponent>()->CollisionWithPlayer(m_Qbert);
 	}
 }
 

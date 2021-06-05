@@ -14,12 +14,12 @@ void qbert::SlickOrSamComponent::DoNextMove()
 	if (rand() % 2 == 0)
 	{
 		// right
-		m_MovementComponent->Move(MovementComponent::MoveDirection::RIGHT, false, false);
+		m_MovementComponent->Move(MovementComponent::MoveDirection::RIGHT, false, false, true);
 	}
 	else
 	{
 		// down
-		m_MovementComponent->Move(MovementComponent::MoveDirection::DOWN, false, false);
+		m_MovementComponent->Move(MovementComponent::MoveDirection::DOWN, false, false, true);
 	}
 }
 void qbert::SlickOrSamComponent::Kill()

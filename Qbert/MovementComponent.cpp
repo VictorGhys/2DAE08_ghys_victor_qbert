@@ -25,7 +25,7 @@ void qbert::MovementComponent::Update()
 	}
 }
 
-void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, bool canTakeDisk)
+void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, bool canTakeDisk, bool revertColor)
 {
 	switch (direction)
 	{
@@ -77,6 +77,10 @@ void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, b
 	if (changeColor)
 	{
 		newTileToStandOn->GetComponentByType<LevelTileComponent>()->ChangeColor();
+	}
+	if (revertColor)
+	{
+		newTileToStandOn->GetComponentByType<LevelTileComponent>()->RevertColor();
 	}
 }
 

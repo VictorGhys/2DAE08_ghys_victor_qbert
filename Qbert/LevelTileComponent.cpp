@@ -99,3 +99,13 @@ void qbert::LevelTileComponent::ChangeColor()
 		break;
 	}
 }
+
+void qbert::LevelTileComponent::RevertColor()
+{
+	if (m_ActiveLevel > 0)
+	{
+		m_ActiveLevel--;
+		m_Tile->SetTexture(m_ActiveLevels.at(m_ActiveLevel));
+		m_ActiveTiles--;
+	}
+}
