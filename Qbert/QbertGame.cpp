@@ -20,6 +20,7 @@
 #include "SDL2SoundSystem.h"
 //#include "ServiceLocator.h"
 #include "EnemyFactory.h"
+#include "EnemySpawnerComponent.h"
 #include "GameTime.h"
 #include "UggOrWrongWayComponent.h"
 
@@ -33,7 +34,9 @@ qbert::QbertGame::QbertGame()
 	m_CollisionTime(),
 	m_CollisionIntervalTime(1),
 	m_QbertHasTakenDisk(false),
-	m_HasTakenDiskResetTime()
+	m_HasTakenDiskResetTime(),
+	m_CoilySpawnTime(),
+	m_Coily(nullptr)
 {
 }
 void qbert::QbertGame::Update()
@@ -55,6 +58,18 @@ void qbert::QbertGame::Update()
 	{
 		m_HasTakenDiskResetTime = 0;
 		m_QbertHasTakenDisk = false;
+	}
+	// Spawn coily when when there is none after a certain time
+	if (m_Coily == nullptr)
+	{
+		m_CoilySpawnTime += dae::GameTime::GetInstance()->GetDeltaTime();
+		if (m_CoilySpawnTime >= m_MaxCoilySpawnTime)
+		{
+			m_CoilySpawnTime = 0;
+			m_Coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
+			m_Enemies.push_back(m_Coily);
+			m_Scene.Add(m_Coily);
+		}
 	}
 }
 
@@ -174,9 +189,14 @@ void qbert::QbertGame::LoadGame()
 	m_Scene.Add(sam);
 	m_Enemies.push_back(sam);
 	//Coily
-	auto coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
+	/*auto coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
 	m_Scene.Add(coily);
-	m_Enemies.push_back(coily);
+	m_Enemies.push_back(coily);*/
+
+	//auto enemySpawner = new GameObject();
+	//auto enemySpawnerComponent = new EnemySpawnerComponent(enemySpawner, this);
+	//enemySpawner->AddComponent(enemySpawnerComponent);
+	//m_Scene.Add(enemySpawner);
 
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
 	ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
@@ -378,10 +398,14 @@ void qbert::QbertGame::Destroy(dae::GameObject* object)
 		});
 	if (It != m_Enemies.end())
 	{
+		if ((*It)->GetComponentByType<EnemyComponent>()->GetType() == EnemyComponent::EnemyType::COILY)
+		{
+			m_Coily = nullptr;
+		}
 		m_Enemies.erase(It);
 	}
 }
-glm::ivec2 qbert::QbertGame::GetQbertPosForCoily()
+glm::ivec2 qbert::QbertGame::GetQbertPosForCoily() const
 {
 	if (m_QbertHasTakenDisk)
 	{

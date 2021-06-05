@@ -25,13 +25,13 @@ namespace qbert
 			SIDEWAYS_LEFT,
 			SIDEWAYS_RIGHT,
 		};
-		MovementComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame, glm::ivec2 spawnPos);
+		MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos);
 
 		void Update() override;
 		void Move(MoveDirection direction, bool changeColor, bool canTakeDisk);
 		void Respawn();
 		QbertGame* GetQbertGame() const { return m_QbertGame; }
-		dae::GameObject* GetTileStandingOn() const { return m_QbertGame->GetTile(m_PosRow, m_PosCol); }
+		dae::GameObject* GetTileStandingOn() const;
 		bool IsOnLastRow() const;
 		glm::ivec2 GetPosRowCol() const;
 	private:

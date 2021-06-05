@@ -1,6 +1,5 @@
 #pragma once
 #include <Component.h>
-
 #include "MovementComponent.h"
 
 namespace qbert
@@ -21,6 +20,7 @@ namespace qbert
 		EnemyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent);
 		void Update() override;
 		virtual void CollisionWithPlayer(dae::GameObject* player) = 0;
+		EnemyType GetType() const { return m_Type; }
 	protected:
 		virtual void DoNextMove() = 0;
 		MovementComponent* m_MovementComponent;

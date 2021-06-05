@@ -27,6 +27,7 @@ namespace qbert
 		dae::GameObject* GetTile(int row, int col);
 		dae::GameObject* GetTopOfLevel();
 		dae::GameObject* GetQbert() const { return m_Qbert; }
+		dae::Scene& GetScene() const { return m_Scene; }
 
 		void RemoveDisk(int row, int col);
 		void LoadNextLevel();
@@ -34,7 +35,7 @@ namespace qbert
 		void Destroy(dae::GameObject* object);
 		const static int m_LevelRows{ 7 };
 		const static int m_LevelCols{ 7 };
-		glm::ivec2 GetQbertPosForCoily();
+		glm::ivec2 GetQbertPosForCoily() const;
 		void SetQbertPosForCoily(glm::ivec2 qbertPos) { m_QbertLastPos = qbertPos; }
 		void SetQbertHasTakenDisk(bool hasTakenDisk) { m_QbertHasTakenDisk = hasTakenDisk; }
 	private:
@@ -57,5 +58,8 @@ namespace qbert
 		bool m_QbertHasTakenDisk;
 		const float m_MaxHasTakenDiskResetTime{ 4 };
 		float m_HasTakenDiskResetTime;
+		const float m_MaxCoilySpawnTime{ 8 };
+		float m_CoilySpawnTime;
+		dae::GameObject* m_Coily;
 	};
 }

@@ -1,3 +1,4 @@
+#include "MiniginPCH.h"
 #include "EnemyComponent.h"
 
 #include "GameTime.h"
