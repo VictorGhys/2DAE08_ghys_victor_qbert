@@ -46,6 +46,7 @@ namespace qbert
 
 		dae::GameObject* m_Level[m_LevelRows][m_LevelCols]{ nullptr };
 		dae::GameObject* m_Qbert;
+		dae::GameObject* m_Qbert2;
 		dae::Scene& m_Scene;
 		int m_CurrentLevel;
 		const int m_MaxLevel;
@@ -61,7 +62,7 @@ namespace qbert
 		const float m_MaxCoilySpawnTime{ 8 };
 		float m_CoilySpawnTime;
 		dae::GameObject* m_Coily;
-		const float m_MaxEnemySpawnTime{ 6 };
+		const float m_MaxEnemySpawnTime{ 8 };
 		float m_EnemySpawnTime;
 	};
 }

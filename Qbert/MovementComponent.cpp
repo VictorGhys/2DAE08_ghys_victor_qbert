@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "LevelTileComponent.h"
 #include "QbertGame.h"
+#include "ServiceLocator.h"
 #include "UggOrWrongWayComponent.h"
 
 qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos)
@@ -55,6 +56,7 @@ void qbert::MovementComponent::Move(MoveDirection direction, bool changeColor, b
 		m_pOwner->GetTransform()->SetPosition(newPos);
 		if (canTakeDisk && newTileToStandOn->GetComponentByType<LevelTileComponent>()->GetTileType() == LevelTileComponent::TileType::DISK)
 		{
+			dae::ServiceLocator::GetSoundSystem().Play("../Data/lift.wav", 10);
 			m_QbertGame->RemoveDisk(m_PosRow, m_PosCol);
 			m_QbertGame->SetQbertHasTakenDisk(true);
 			m_QbertGame->SetQbertPosForCoily(glm::ivec2{ m_PosRow, m_PosCol });

@@ -1,6 +1,5 @@
 #include "MiniginPCH.h"
 #include "InputManager.h"
-#include <iostream>
 #include <SDL_events.h>
 #include <Windows.h>
 #include <Xinput.h>

@@ -4,6 +4,7 @@
 #include "ResourceManager.h"
 #include "PointsDisplayComponent.h"
 #include "QbertObserver.h"
+#include "ServiceLocator.h"
 
 qbert::QbertComponent::QbertComponent(dae::GameObject* pOwner)
 	:Component(pOwner),
@@ -18,10 +19,17 @@ void qbert::QbertComponent::Update()
 void qbert::QbertComponent::Kill()
 {
 	m_Health -= 1;
-	std::cout << "qbert lost a live\n";
 	for (auto observer : m_Observers)
 	{
 		observer->Died();
+	}
+	if (m_Health > 0)
+	{
+		dae::ServiceLocator::GetSoundSystem().Play("../Data/swear.wav", 10);
+	}
+	else
+	{
+		dae::ServiceLocator::GetSoundSystem().Play("../Data/fall.wav", 10);
 	}
 }
 

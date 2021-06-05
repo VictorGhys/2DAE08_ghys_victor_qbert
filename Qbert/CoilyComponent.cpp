@@ -4,6 +4,7 @@
 #include "QbertComponent.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include "ServiceLocator.h"
 
 qbert::CoilyComponent::CoilyComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent, dae::GameObject* player, QbertGame* qbertGame)
 	:EnemyComponent(pOwner, type, movementComponent),
@@ -96,6 +97,7 @@ void qbert::CoilyComponent::Kill()
 	std::cout << "Coily died\n";
 	m_MovementComponent->GetQbertGame()->Destroy(m_pOwner);
 	m_Player->GetComponentByType<QbertComponent>()->DefeatCoily();
+	dae::ServiceLocator::GetSoundSystem().Play("../Data/snake-fall.wav", 10);
 }
 void qbert::CoilyComponent::CollisionWithPlayer(dae::GameObject* player)
 {

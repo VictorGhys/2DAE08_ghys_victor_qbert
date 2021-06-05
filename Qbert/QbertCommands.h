@@ -96,6 +96,7 @@ namespace qbert
 		void Move()
 		{
 			m_MovementComponent->Move(m_Direction, true, true);
+			dae::ServiceLocator::GetSoundSystem().Play("../Data/jump.wav", 10);
 		}
 		qbert::MovementComponent* m_MovementComponent;
 		qbert::MovementComponent::MoveDirection m_Direction;
