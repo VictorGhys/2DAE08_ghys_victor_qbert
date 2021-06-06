@@ -475,10 +475,29 @@ void qbert::QbertGame::RestartGame(GameMode gameMode) const
 	scene.SetGame(qbertGame);
 	// unbind commands because they will give errors when pressed
 	auto& input = dae::InputManager::GetInstance();
+	input.UnBindCommand('w');
+	input.UnBindCommand('a');
+	input.UnBindCommand('s');
+	input.UnBindCommand('d');
+
 	input.UnBindCommand('i');
 	input.UnBindCommand('k');
 	input.UnBindCommand('j');
 	input.UnBindCommand('l');
+
+	input.UnBindCommand({ dae::ControllerButton::ButtonUP,0 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonDOWN,0 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonLEFT,0 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonRIGHT,0 });
+
+	input.UnBindCommand({ dae::ControllerButton::ButtonUP,1 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonDOWN,1 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonLEFT,1 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonRIGHT,1 });
+	// sound binds
+	input.UnBindCommand('m');
+	input.UnBindCommand({ dae::ControllerButton::ButtonSTART, 0 });
+	input.UnBindCommand({ dae::ControllerButton::ButtonSTART, 1 });
 
 	qbertGame->LoadGame();
 }

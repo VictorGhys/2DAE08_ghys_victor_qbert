@@ -83,14 +83,19 @@ void dae::InputManager::UnBindCommand(ControllerButtonId buttonId)
 {
 	auto It = m_ConsoleCommands.find(buttonId);
 	if (It != m_ConsoleCommands.end())
+	{
+		Command* command = It->second;
 		m_ConsoleCommands.erase(It);
+		delete command;
+	}
 }
 void dae::InputManager::UnBindCommand(const SDL_Keycode& keycode)
 {
 	auto It = m_KeyboardCommands.find(keycode);
 	if (It != m_KeyboardCommands.end())
 	{
+		Command* command = It->second;
 		m_KeyboardCommands.erase(It);
-		delete (*It).second;
+		delete command;
 	}
 }
