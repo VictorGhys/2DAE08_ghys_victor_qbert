@@ -115,11 +115,9 @@ void qbert::QbertGame::Render()
 	ImGui::End();
 }
 
-/**
- * Code constructing the scene world starts here
- */
 void qbert::QbertGame::LoadGame()
 {
+	//Code constructing the scene world starts here
 	using namespace dae;
 
 	m_Scene.SetGame(this);
@@ -134,7 +132,6 @@ void qbert::QbertGame::LoadGame()
 	go = new GameObject();
 	go->AddComponent(new RenderComponent(go));
 	go->GetComponentByType<RenderComponent>()->SetTexture("logo.png");
-	//go->SetPosition(216, 180);
 	go->GetComponentByType<RenderComponent>()->SetPosition(216, 180);
 	m_Scene.Add(go);
 
@@ -146,7 +143,7 @@ void qbert::QbertGame::LoadGame()
 	m_Scene.Add(go);
 
 	// Create Player 1
-	m_Qbert = CreatePlayer(GetPlayerSpawnPos(false));
+	m_Qbert = CreatePlayer(GetPlayerSpawnPos(false), font);
 	auto movementComponent = m_Qbert->GetComponentByType<MovementComponent>();
 	auto& input = InputManager::GetInstance();
 	//create controller binds player 1
@@ -160,26 +157,10 @@ void qbert::QbertGame::LoadGame()
 	input.BindCommand('a', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
 	input.BindCommand('d', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 
-	// points player 1
-	go = new GameObject();
-	auto pointsDisplayComponent = new PointsDisplayComponent(go, "", font);
-	m_Qbert->AddComponent(pointsDisplayComponent);
-	pointsDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent->SetPosition(0, 30);
-	m_Scene.Add(go);
-
-	// health player 1
-	go = new GameObject();
-	auto healthDisplayComponent = new HealthDisplayComponent(go, "", font);
-	m_Qbert->AddComponent(healthDisplayComponent);
-	healthDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
-	healthDisplayComponent->SetPosition(0, 90);
-	m_Scene.Add(go);
-
 	if (m_GameMode == GameMode::CO_OP)
 	{
 		// Create Player 2
-		m_Qbert2 = CreatePlayer(GetPlayerSpawnPos(true));
+		m_Qbert2 = CreatePlayer(GetPlayerSpawnPos(true), font, true);
 		movementComponent = m_Qbert2->GetComponentByType<MovementComponent>();
 		//create controller binds player 2
 		input.BindCommand({ ControllerButton::ButtonUP,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
@@ -191,21 +172,6 @@ void qbert::QbertGame::LoadGame()
 		input.BindCommand('k', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
 		input.BindCommand('j', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
 		input.BindCommand('l', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
-
-		// points player 2
-		go = new GameObject();
-		auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font, "Points2: ");
-		m_Qbert2->AddComponent(pointsDisplayComponent2);
-		pointsDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
-		pointsDisplayComponent2->SetPosition(0, 60);
-		m_Scene.Add(go);
-		// health player 2
-		go = new GameObject();
-		auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font, "Lives2: ");
-		m_Qbert2->AddComponent(healthDisplayComponent2);
-		healthDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
-		healthDisplayComponent2->SetPosition(0, 110);
-		m_Scene.Add(go);
 	}
 	// Sound Binds
 	input.BindCommand('m', new ToggleMuteCommand());
@@ -226,15 +192,12 @@ void qbert::QbertGame::LoadGame()
 
 	// Sounds
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
-	//ServiceLocator::GetSoundSystem().Play("../Data/tune.wav", 50);
 }
 
 void qbert::QbertGame::CreateLevel(const std::string& path)
 {
-	std::cout << "creating level...\n";
-
-	glm::vec2 start{ 120,110 };//320,240//220,140
-	const float size{ 32.f };//16
+	glm::vec2 start{ 120,110 };
+	const float size{ 32.f };
 	const float height{ 2 * size };
 	const float width{ sqrt(3.f) * size };
 
@@ -277,7 +240,7 @@ void qbert::QbertGame::CreateLevel(const std::string& path)
 	}
 }
 
-dae::GameObject* qbert::QbertGame::CreatePlayer(const glm::ivec2& spawnPos)
+dae::GameObject* qbert::QbertGame::CreatePlayer(const glm::ivec2& spawnPos, std::shared_ptr<dae::Font> font, bool player2)
 {
 	using namespace dae;
 	auto qbert = new GameObject();
@@ -291,9 +254,37 @@ dae::GameObject* qbert::QbertGame::CreatePlayer(const glm::ivec2& spawnPos)
 	MovementComponent* movementComponent = new MovementComponent(qbert, this, spawnPos);
 	qbert->AddComponent(movementComponent);
 
-	qbert->AddComponent(new QbertComponent(qbert, this));
-
+	auto qbertComponent = new QbertComponent(qbert, this);
+	qbert->AddComponent(qbertComponent);
 	m_Scene.Add(qbert);
+
+	float displayComponentOffset = 25;
+	if (!player2)
+		displayComponentOffset = 0;
+
+	// points display player
+	auto points = new GameObject();
+	PointsDisplayComponent* pointsDisplayComponent;
+	if (player2)
+		pointsDisplayComponent = new PointsDisplayComponent(points, "", font, "Points2: ");
+	else
+		pointsDisplayComponent = new PointsDisplayComponent(points, "", font);
+	qbert->AddComponent(pointsDisplayComponent);
+	pointsDisplayComponent->SetQbert(qbertComponent);
+	pointsDisplayComponent->SetPosition(0, 30 + displayComponentOffset);
+	m_Scene.Add(points);
+
+	// health display player
+	auto health = new GameObject();
+	HealthDisplayComponent* healthDisplayComponent;
+	if (player2)
+		healthDisplayComponent = new HealthDisplayComponent(health, "", font, "Lives2: ");
+	else
+		healthDisplayComponent = new HealthDisplayComponent(health, "", font);
+	qbert->AddComponent(healthDisplayComponent);
+	healthDisplayComponent->SetQbert(qbertComponent);
+	healthDisplayComponent->SetPosition(0, 90 + displayComponentOffset);
+	m_Scene.Add(health);
 	return qbert;
 }
 

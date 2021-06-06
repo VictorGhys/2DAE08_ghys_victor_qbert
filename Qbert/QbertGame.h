@@ -10,6 +10,7 @@
 #pragma warning(pop)
 
 namespace dae {
+	class Font;
 	class Scene;
 	class GameObject;
 }
@@ -49,7 +50,7 @@ namespace qbert
 		void RestartGame(GameMode gameMode) const;
 	private:
 		void CreateLevel(const std::string& path);
-		dae::GameObject* CreatePlayer(const glm::ivec2& spawnPos);
+		dae::GameObject* CreatePlayer(const glm::ivec2& spawnPos, std::shared_ptr<dae::Font> font, bool player2 = false);
 		void CheckLevelCompleted();
 		void CollisionCheck();
 		glm::ivec2 GetPlayerSpawnPos(bool player2) const;
