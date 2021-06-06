@@ -428,6 +428,14 @@ void qbert::QbertGame::Destroy(dae::GameObject* object)
 		if ((*It)->GetComponentByType<EnemyComponent>()->GetType() == EnemyComponent::EnemyType::COILY)
 		{
 			m_Coily = nullptr;
+			if (m_GameMode == GameMode::VERSUS)
+			{
+				auto& input = dae::InputManager::GetInstance();
+				input.UnBindCommand('i');
+				input.UnBindCommand('k');
+				input.UnBindCommand('j');
+				input.UnBindCommand('l');
+			}
 		}
 		m_Enemies.erase(It);
 	}
@@ -470,5 +478,12 @@ void qbert::QbertGame::RestartGame(GameMode gameMode) const
 	scene.ResetGame();
 	auto qbertGame = new QbertGame(scene, gameMode);
 	scene.SetGame(qbertGame);
+	// unbind commands because they will give errors when pressed
+	auto& input = dae::InputManager::GetInstance();
+	input.UnBindCommand('i');
+	input.UnBindCommand('k');
+	input.UnBindCommand('j');
+	input.UnBindCommand('l');
+
 	qbertGame->LoadGame();
 }

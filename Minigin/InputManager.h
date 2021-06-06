@@ -44,6 +44,8 @@ namespace dae
 		bool IsPressed(ControllerButton button) const;
 		void BindCommand(ControllerButtonId buttonId, Command* command);
 		void BindCommand(const SDL_Keycode& keycode, Command* command);
+		void UnBindCommand(ControllerButtonId buttonId);
+		void UnBindCommand(const SDL_Keycode& keycode);
 	private:
 		// controller
 		XINPUT_STATE m_CurrentState;
