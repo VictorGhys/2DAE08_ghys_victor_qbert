@@ -1,5 +1,4 @@
 #pragma once
-#include <functional>
 #include "Game.h"
 #include "MiniginLibType.h"
 struct SDL_Window;
@@ -12,7 +11,6 @@ namespace dae
 	{
 	public:
 		void Initialize();
-		void LoadGame() const;
 		void Cleanup();
 		void Run(Game* game);
 	private:

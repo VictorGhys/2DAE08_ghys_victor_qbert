@@ -44,22 +44,18 @@ void dae::Minigin::Initialize()
 		return;
 	}
 	initAudio();
-
-	/*m_Qbert = new GameObject();
-	m_Qbert2 = new GameObject();*/
 }
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
-	GameTime::GetInstance()->Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	endAudio();
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(/*Game* game*/ /*std::function<void()> loadGame*/ Game* game)
+void dae::Minigin::Run(Game* game)
 {
 	// to find memory leak
 	//HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
@@ -85,7 +81,7 @@ void dae::Minigin::Run(/*Game* game*/ /*std::function<void()> loadGame*/ Game* g
 		{
 			const auto currentTime = high_resolution_clock::now();
 			auto deltaTime = duration<float>(currentTime - lastTime);
-			GameTime::GetInstance()->SetDeltaTime(static_cast<float>(deltaTime.count()));
+			GameTime::GetInstance().SetDeltaTime(static_cast<float>(deltaTime.count()));
 			lastTime = currentTime;
 
 			doContinue = input.ProcessInput();

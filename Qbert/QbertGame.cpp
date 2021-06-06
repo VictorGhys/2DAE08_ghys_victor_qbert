@@ -57,7 +57,7 @@ void qbert::QbertGame::Update()
 
 	// reset the qbertHasTakenDisk
 	if (m_QbertHasTakenDisk)
-		m_HasTakenDiskResetTime += dae::GameTime::GetInstance()->GetDeltaTime();
+		m_HasTakenDiskResetTime += dae::GameTime::GetInstance().GetDeltaTime();
 	if (m_HasTakenDiskResetTime >= m_MaxHasTakenDiskResetTime)
 	{
 		m_HasTakenDiskResetTime = 0;
@@ -66,7 +66,7 @@ void qbert::QbertGame::Update()
 	// Spawn coily when when there is none after a certain time
 	if (m_Coily == nullptr)
 	{
-		m_CoilySpawnTime += dae::GameTime::GetInstance()->GetDeltaTime();
+		m_CoilySpawnTime += dae::GameTime::GetInstance().GetDeltaTime();
 		if (m_CoilySpawnTime >= m_MaxCoilySpawnTime)
 		{
 			m_CoilySpawnTime = 0;
@@ -76,7 +76,7 @@ void qbert::QbertGame::Update()
 		}
 	}
 	// Spawn enemies after a certain time
-	m_EnemySpawnTime += dae::GameTime::GetInstance()->GetDeltaTime();
+	m_EnemySpawnTime += dae::GameTime::GetInstance().GetDeltaTime();
 	if (m_EnemySpawnTime >= m_MaxEnemySpawnTime)
 	{
 		m_EnemySpawnTime = 0;

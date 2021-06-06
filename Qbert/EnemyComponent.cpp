@@ -13,7 +13,7 @@ qbert::EnemyComponent::EnemyComponent(dae::GameObject* pOwner, EnemyType type, M
 }
 void qbert::EnemyComponent::Update()
 {
-	m_MoveTime += dae::GameTime::GetInstance()->GetDeltaTime();
+	m_MoveTime += dae::GameTime::GetInstance().GetDeltaTime();
 	if (m_MoveTime >= m_MoveIntervalTime)
 	{
 		m_MoveTime -= m_MoveIntervalTime;

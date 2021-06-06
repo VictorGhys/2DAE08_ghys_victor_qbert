@@ -10,7 +10,8 @@
 
 qbert::UggOrWrongWayComponent::UggOrWrongWayComponent(dae::GameObject* pOwner, EnemyType type, MovementComponent* movementComponent)
 	:EnemyComponent(pOwner, type, movementComponent),
-	HealthComponent(1)
+	HealthComponent(1),
+	m_PlayerCollisionCooldown()
 {
 }
 
@@ -63,5 +64,5 @@ void qbert::UggOrWrongWayComponent::CollisionWithPlayer(dae::GameObject* player)
 
 void qbert::UggOrWrongWayComponent::UpdateTimers()
 {
-	m_PlayerCollisionCooldown += dae::GameTime::GetInstance()->GetDeltaTime();
+	m_PlayerCollisionCooldown += dae::GameTime::GetInstance().GetDeltaTime();
 }

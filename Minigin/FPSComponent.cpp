@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "FPSComponent.h"
 
-
 #include "GameObject.h"
 #include "GameTime.h"
 
@@ -13,12 +12,10 @@ dae::FPSComponent::FPSComponent(GameObject* pOwner, const std::string& text, con
 }
 void dae::FPSComponent::Update()
 {
-	float fps = GameTime::GetInstance()->GetFPS();
+	float fps = GameTime::GetInstance().GetFPS();
 	if (fps != m_FPS)
 	{
 		m_pTextComponent->SetText(std::to_string(fps).substr(0, 3) + "FPS");
 		m_FPS = fps;
 	}
 }
-
-
