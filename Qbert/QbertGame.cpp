@@ -59,6 +59,10 @@ void qbert::QbertGame::Update()
 	{
 		m_Scene.Destroy(object);
 	}
+	if (m_GameObjectsToDestroy.size() > 10)
+	{
+		std::cout << "wtf!???\n";
+	}
 	m_GameObjectsToDestroy.clear();
 
 	// reset the qbertHasTakenDisk
@@ -316,7 +320,7 @@ void qbert::QbertGame::LoadNextLevel()
 {
 	m_CurrentLevel++;
 	LevelTileComponent::m_ActiveTiles = 0;
-	if (m_CurrentLevel == 2)
+	if (m_CurrentLevel > 1)
 	{
 		m_TilesActiveToWin = m_TilesActiveToWinForLevels.at(m_CurrentLevel - 1);
 	}
@@ -378,6 +382,7 @@ void qbert::QbertGame::CheckLevelCompleted()
 		{
 			//YOU WON!
 			std::cout << "YOU WON!\n";
+			RestartGame(m_GameMode);
 		}
 	}
 }

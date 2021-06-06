@@ -70,7 +70,7 @@ namespace qbert
 		bool m_QbertHasTakenDisk;
 		const float m_MaxHasTakenDiskResetTime{ 4 };
 		float m_HasTakenDiskResetTime;
-		const float m_MaxCoilySpawnTime{ 8 };
+		const float m_MaxCoilySpawnTime{ 8888 };
 		float m_CoilySpawnTime;
 		dae::GameObject* m_Coily;
 		const float m_MaxEnemySpawnTime{ 9 };

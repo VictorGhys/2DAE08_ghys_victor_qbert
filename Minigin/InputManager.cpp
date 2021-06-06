@@ -55,6 +55,7 @@ bool dae::InputManager::ProcessInput()
 				if (IsPressed(It->first.first) && It->first.second == i)
 				{
 					m_ConsoleCommands[It->first]->Execute();
+					return true;
 				}
 			}
 		}
