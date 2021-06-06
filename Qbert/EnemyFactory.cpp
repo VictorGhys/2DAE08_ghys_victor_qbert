@@ -6,7 +6,7 @@
 #include "UggOrWrongWayComponent.h"
 #include "CoilyComponent.h"
 
-dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type, QbertGame* qbertGame)
+dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type, QbertGame* qbertGame, bool isControlledByPlayer)
 {
 	dae::GameObject* enemy = new dae::GameObject();
 	MovementComponent* movementComponent;
@@ -23,7 +23,7 @@ dae::GameObject* qbert::EnemyFactory::CreateEnemy(EnemyComponent::EnemyType type
 		movementComponent = new MovementComponent(enemy, qbertGame, { 0,3 });
 		enemy->AddComponent(movementComponent);
 
-		CoilyComponent = new qbert::CoilyComponent(enemy, type, movementComponent, qbertGame->GetQbert(), qbertGame);
+		CoilyComponent = new qbert::CoilyComponent(enemy, type, movementComponent, qbertGame->GetQbert(), qbertGame, isControlledByPlayer);
 		enemy->AddComponent(CoilyComponent);
 
 		renderComponent = new dae::RenderComponent(enemy);

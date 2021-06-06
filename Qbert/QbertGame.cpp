@@ -16,7 +16,6 @@
 #include "RenderComponent.h"
 #include "ResourceManager.h"
 #include "Scene.h"
-#include "SceneManager.h"
 #include "SDL2SoundSystem.h"
 #include "EnemyFactory.h"
 #include "GameTime.h"
@@ -69,7 +68,7 @@ void qbert::QbertGame::Update()
 		if (m_CoilySpawnTime >= m_MaxCoilySpawnTime)
 		{
 			m_CoilySpawnTime = 0;
-			m_Coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this);
+			m_Coily = EnemyFactory::CreateEnemy(EnemyComponent::EnemyType::COILY, this, m_GameMode == GameMode::VERSUS);
 			m_Enemies.push_back(m_Coily);
 			m_Scene.Add(m_Coily);
 		}
@@ -94,6 +93,7 @@ void qbert::QbertGame::Render()
 	{
 		ImGui::Text("second player moves with IJKL or controller DPAD");
 	}
+	ImGui::Text("mute the audio with m or start button");
 	ImGui::End();
 
 	// To Switch game modes
