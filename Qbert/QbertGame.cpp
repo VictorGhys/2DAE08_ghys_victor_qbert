@@ -94,34 +94,21 @@ void qbert::QbertGame::Render()
 	{
 		ImGui::Text("second player moves with IJKL or controller DPAD");
 	}
-
 	ImGui::End();
+
 	// To Switch game modes
 	ImGui::Begin("Game Modes");
 	if (ImGui::Button("Play Single Player"))
 	{
-		// create local copy of scene because this will be deleted
-		auto& scene = m_Scene;
-		scene.ResetGame();
-		auto qbertGame = new QbertGame(scene, GameMode::SINGLE_PLAYER);
-		scene.SetGame(qbertGame);
-		qbertGame->LoadGame();
+		RestartGame(GameMode::SINGLE_PLAYER);
 	}
 	if (ImGui::Button("Play Co-op"))
 	{
-		auto& scene = m_Scene;
-		scene.ResetGame();
-		auto qbertGame = new QbertGame(scene, GameMode::CO_OP);
-		scene.SetGame(qbertGame);
-		qbertGame->LoadGame();
+		RestartGame(GameMode::CO_OP);
 	}
 	if (ImGui::Button("Play Versus"))
 	{
-		auto& scene = m_Scene;
-		scene.ResetGame();
-		auto qbertGame = new QbertGame(scene, GameMode::VERSUS);
-		scene.SetGame(qbertGame);
-		qbertGame->LoadGame();
+		RestartGame(GameMode::VERSUS);
 	}
 	ImGui::End();
 }
@@ -306,7 +293,7 @@ dae::GameObject* qbert::QbertGame::CreatePlayer(const glm::ivec2& spawnPos)
 	MovementComponent* movementComponent = new MovementComponent(qbert, this, spawnPos);
 	qbert->AddComponent(movementComponent);
 
-	qbert->AddComponent(new QbertComponent(qbert));
+	qbert->AddComponent(new QbertComponent(qbert, this));
 
 	m_Scene.Add(qbert);
 	return qbert;
@@ -371,12 +358,13 @@ void qbert::QbertGame::LoadNextLevel()
 	// load new level
 	CreateLevel("../Data/Level" + std::to_string(m_CurrentLevel) + ".txt");
 
-	m_Qbert->GetComponentByType<MovementComponent>()->Respawn();
+	m_Qbert->GetComponentByType<MovementComponent>()->SetPosRowCol(GetPlayerSpawnPos(false));
 	// put qbert on the foreground
 	m_Scene.Remove(m_Qbert);
 	m_Scene.Add(m_Qbert);
 	if (m_GameMode == GameMode::CO_OP)
 	{
+		m_Qbert2->GetComponentByType<MovementComponent>()->SetPosRowCol(GetPlayerSpawnPos(true));
 		m_Scene.Remove(m_Qbert2);
 		m_Scene.Add(m_Qbert2);
 	}
@@ -473,4 +461,14 @@ glm::ivec2 qbert::QbertGame::GetPlayerSpawnPos(bool player2) const
 	default:
 		return glm::ivec2{ 0,3 };
 	}
+}
+
+void qbert::QbertGame::RestartGame(GameMode gameMode) const
+{
+	// create local copy of scene because this will be deleted
+	auto& scene = m_Scene;
+	scene.ResetGame();
+	auto qbertGame = new QbertGame(scene, gameMode);
+	scene.SetGame(qbertGame);
+	qbertGame->LoadGame();
 }

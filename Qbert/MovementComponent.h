@@ -34,6 +34,7 @@ namespace qbert
 		dae::GameObject* GetTileStandingOn() const;
 		bool IsOnLastRow() const;
 		glm::ivec2 GetPosRowCol() const;
+		void SetPosRowCol(const glm::ivec2& pos);
 	private:
 		void MoveUp();
 		void MoveDown();

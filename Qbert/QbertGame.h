@@ -35,6 +35,7 @@ namespace qbert
 		dae::GameObject* GetTopOfLevel();
 		dae::GameObject* GetQbert() const { return m_Qbert; }
 		dae::Scene& GetScene() const { return m_Scene; }
+		GameMode GetGameMode() const { return m_GameMode; }
 
 		void RemoveDisk(int row, int col);
 		void LoadNextLevel();
@@ -45,6 +46,7 @@ namespace qbert
 		glm::ivec2 GetQbertPosForCoily() const;
 		void SetQbertPosForCoily(const glm::ivec2& qbertPos) { m_QbertLastPos = qbertPos; }
 		void SetQbertHasTakenDisk(bool hasTakenDisk) { m_QbertHasTakenDisk = hasTakenDisk; }
+		void RestartGame(GameMode gameMode) const;
 	private:
 		void CreateLevel(const std::string& path);
 		dae::GameObject* CreatePlayer(const glm::ivec2& spawnPos);

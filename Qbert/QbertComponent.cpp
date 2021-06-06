@@ -3,12 +3,14 @@
 #include "HealthDisplayComponent.h"
 #include "ResourceManager.h"
 #include "PointsDisplayComponent.h"
+#include "QbertGame.h"
 #include "QbertObserver.h"
 #include "ServiceLocator.h"
 
-qbert::QbertComponent::QbertComponent(dae::GameObject* pOwner)
+qbert::QbertComponent::QbertComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame)
 	:Component(pOwner),
-	HealthComponent(3)
+	HealthComponent(3),
+	m_QbertGame(qbertGame)
 {
 }
 
@@ -30,6 +32,7 @@ void qbert::QbertComponent::Kill()
 	else
 	{
 		dae::ServiceLocator::GetSoundSystem().Play("../Data/fall.wav", 10);
+		m_QbertGame->RestartGame(m_QbertGame->GetGameMode());
 	}
 }
 

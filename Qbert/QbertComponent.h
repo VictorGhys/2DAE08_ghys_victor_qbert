@@ -4,12 +4,13 @@
 
 namespace qbert
 {
+	class QbertGame;
 	class QbertObserver;
 
 	class QbertComponent : public dae::Component, public HealthComponent
 	{
 	public:
-		QbertComponent(dae::GameObject* pOwner);
+		QbertComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame);
 		~QbertComponent() = default;
 		void Kill() override;
 		void Update() override;
@@ -22,5 +23,6 @@ namespace qbert
 
 	private:
 		std::vector<QbertObserver*> m_Observers;
+		QbertGame* m_QbertGame;
 	};
 }

@@ -167,6 +167,12 @@ glm::ivec2 qbert::MovementComponent::GetPosRowCol() const
 	return glm::ivec2{ m_PosRow, m_PosCol };
 }
 
+void qbert::MovementComponent::SetPosRowCol(const glm::ivec2& pos)
+{
+	m_PosRow = pos.x;
+	m_PosCol = pos.y;
+}
+
 dae::GameObject* qbert::MovementComponent::GetTileStandingOn() const
 {
 	return m_QbertGame->GetTile(m_PosRow, m_PosCol);
