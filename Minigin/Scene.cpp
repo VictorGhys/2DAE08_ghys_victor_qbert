@@ -37,7 +37,8 @@ void Scene::Update()
 	{
 		object->Update();
 	}
-	m_Game->Update();
+	if (m_Game)
+		m_Game->Update();
 }
 
 void Scene::Render() const
@@ -56,11 +57,19 @@ void Scene::Render() const
 			renderComponent->Render();
 		}
 	}
+	m_Game->Render();
 }
 void Scene::SetGame(Game* game)
 {
 	m_Game = game;
 }
+
+void Scene::ResetGame()
+{
+	delete m_Game;
+	m_Game = nullptr;
+}
+
 void Scene::Destroy(GameObject* object)
 {
 	Remove(object);

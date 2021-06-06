@@ -21,14 +21,15 @@
 #include "EnemyFactory.h"
 #include "GameTime.h"
 #include "UggOrWrongWayComponent.h"
+#include "../3rdParty/imgui-1.81/imgui.h"
 
 int qbert::QbertGame::m_TilesActiveToWin = 28;
 
-qbert::QbertGame::QbertGame(GameMode gameMode)
+qbert::QbertGame::QbertGame(dae::Scene& scene, GameMode gameMode)
 	:m_GameMode(gameMode),
 	m_Qbert(nullptr),
 	m_Qbert2(nullptr),
-	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert")),
+	m_Scene(scene),
 	m_CurrentLevel(1),
 	m_MaxLevel(3),
 	m_CollisionTime(),
@@ -39,6 +40,7 @@ qbert::QbertGame::QbertGame(GameMode gameMode)
 	m_Coily(nullptr),
 	m_EnemySpawnTime()
 {
+	LevelTileComponent::m_ActiveTiles = 0;
 }
 void qbert::QbertGame::Update()
 {
@@ -83,6 +85,46 @@ void qbert::QbertGame::Update()
 		m_Scene.Add(enemy);
 	}
 }
+void qbert::QbertGame::Render()
+{
+	// How to play
+	ImGui::Begin("How to play");
+	ImGui::Text("move with WASD or controller DPAD");
+	if (m_GameMode == GameMode::CO_OP)
+	{
+		ImGui::Text("second player moves with IJKL or controller DPAD");
+	}
+
+	ImGui::End();
+	// To Switch game modes
+	ImGui::Begin("Game Modes");
+	if (ImGui::Button("Play Single Player"))
+	{
+		// create local copy of scene because this will be deleted
+		auto& scene = m_Scene;
+		scene.ResetGame();
+		auto qbertGame = new QbertGame(scene, GameMode::SINGLE_PLAYER);
+		scene.SetGame(qbertGame);
+		qbertGame->LoadGame();
+	}
+	if (ImGui::Button("Play Co-op"))
+	{
+		auto& scene = m_Scene;
+		scene.ResetGame();
+		auto qbertGame = new QbertGame(scene, GameMode::CO_OP);
+		scene.SetGame(qbertGame);
+		qbertGame->LoadGame();
+	}
+	if (ImGui::Button("Play Versus"))
+	{
+		auto& scene = m_Scene;
+		scene.ResetGame();
+		auto qbertGame = new QbertGame(scene, GameMode::VERSUS);
+		scene.SetGame(qbertGame);
+		qbertGame->LoadGame();
+	}
+	ImGui::End();
+}
 
 /**
  * Code constructing the scene world starts here
@@ -90,8 +132,6 @@ void qbert::QbertGame::Update()
 void qbert::QbertGame::LoadGame()
 {
 	using namespace dae;
-	// best way to do this is to read it in from a file
-	//Scene& scene = SceneManager::GetInstance().CreateScene("Qbert");
 
 	m_Scene.SetGame(this);
 	srand(static_cast<unsigned>(time(nullptr)));
@@ -112,14 +152,6 @@ void qbert::QbertGame::LoadGame()
 	//go->SetPosition(216, 180);
 	go->GetComponentByType<RenderComponent>()->SetPosition(216, 180);
 	m_Scene.Add(go);
-
-	//auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//go = new GameObject();
-	//auto textComponent = new TextComponent(go, "Programming 4 Assignment", font);
-	//go->AddComponent(textComponent);
-	//textComponent->SetPosition(80, 20);
-	////go->SetPosition(80, 20);
-	//scene.Add(go);
 
 	// FPS
 	go = new GameObject();
@@ -170,10 +202,10 @@ void qbert::QbertGame::LoadGame()
 		input.BindCommand({ ControllerButton::ButtonLEFT,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
 		input.BindCommand({ ControllerButton::ButtonRIGHT,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 		//create keyboard binds player 2
-		input.BindCommand('o', new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
-		input.BindCommand('l', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
-		input.BindCommand('k', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
-		input.BindCommand('m', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
+		input.BindCommand('i', new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
+		input.BindCommand('k', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
+		input.BindCommand('j', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
+		input.BindCommand('l', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 
 		// points player 2
 		go = new GameObject();
@@ -191,7 +223,7 @@ void qbert::QbertGame::LoadGame()
 		m_Scene.Add(go);
 	}
 	// Sound Binds
-	input.BindCommand('p', new ToggleMuteCommand());
+	input.BindCommand('m', new ToggleMuteCommand());
 	input.BindCommand({ ControllerButton::ButtonSTART, 0 }, new ToggleMuteCommand());
 	input.BindCommand({ ControllerButton::ButtonSTART, 1 }, new ToggleMuteCommand());
 
@@ -343,6 +375,11 @@ void qbert::QbertGame::LoadNextLevel()
 	// put qbert on the foreground
 	m_Scene.Remove(m_Qbert);
 	m_Scene.Add(m_Qbert);
+	if (m_GameMode == GameMode::CO_OP)
+	{
+		m_Scene.Remove(m_Qbert2);
+		m_Scene.Add(m_Qbert2);
+	}
 	dae::ServiceLocator::GetSoundSystem().Play("../Data/tune-2.wav", 10);
 }
 

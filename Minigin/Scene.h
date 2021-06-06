@@ -17,6 +17,8 @@ namespace dae
 		void Render() const;
 
 		void SetGame(Game* game);
+		void ResetGame();
+		std::string GetName() const { return m_Name; }
 
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;

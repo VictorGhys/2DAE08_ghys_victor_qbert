@@ -1,12 +1,13 @@
 #include <MiniginPCH.h>
 #include <Minigin.h>
 #include "QbertGame.h"
+#include "SceneManager.h"
 
 int main(int, char* [])
 {
 	dae::Minigin engine;
-	qbert::QbertGame* qbertGame = new qbert::QbertGame(qbert::QbertGame::GameMode::SINGLE_PLAYER);
+	auto& scene = dae::SceneManager::GetInstance().CreateScene("Qbert");
+	qbert::QbertGame* qbertGame = new qbert::QbertGame(scene, qbert::QbertGame::GameMode::SINGLE_PLAYER);
 	engine.Run(qbertGame);
-	delete qbertGame;
 	return 0;
 }

@@ -12,7 +12,7 @@ qbert::MovementComponent::MovementComponent(dae::GameObject* pOwner, QbertGame* 
 	m_QbertGame(qbertGame),
 	m_PosRow(spawnPos.x),
 	m_PosCol(spawnPos.y),
-	m_SpawnPos(spawnPos),
+	m_SpawnPos({ 0,3 }),
 	m_IsSpawned(false)
 {
 }
@@ -21,7 +21,8 @@ void qbert::MovementComponent::Update()
 {
 	if (!m_IsSpawned)
 	{
-		Respawn();
+		auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
+		m_pOwner->GetTransform()->SetPosition(newPos);
 		m_IsSpawned = true;
 	}
 }

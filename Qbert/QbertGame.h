@@ -25,10 +25,11 @@ namespace qbert
 			CO_OP,
 			VERSUS
 		};
-		QbertGame(GameMode gameMode);
+		QbertGame(dae::Scene& scene, GameMode gameMode);
 		virtual ~QbertGame() override = default;
 		void LoadGame() override;
 		void Update() override;
+		void Render() override;
 
 		dae::GameObject* GetTile(int row, int col);
 		dae::GameObject* GetTopOfLevel();
@@ -70,7 +71,7 @@ namespace qbert
 		const float m_MaxCoilySpawnTime{ 8 };
 		float m_CoilySpawnTime;
 		dae::GameObject* m_Coily;
-		const float m_MaxEnemySpawnTime{ 8 };
+		const float m_MaxEnemySpawnTime{ 9 };
 		float m_EnemySpawnTime;
 	};
 }

@@ -12,12 +12,12 @@
 #include "backends/imgui_impl_sdl.h"
 #include "GL\GLU.h"
 
-void dae::Renderer::Init(SDL_Window * window)
+void dae::Renderer::Init(SDL_Window* window)
 {
 	m_ShowDemo = false;
 	m_Window = window;
 	m_Renderer = SDL_CreateRenderer(window, GetOpenGLDriverIndex(), SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (m_Renderer == nullptr) 
+	if (m_Renderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
@@ -48,30 +48,22 @@ void dae::Renderer::Render()
 {
 	SDL_RenderClear(m_Renderer);
 
-	SceneManager::GetInstance().Render();
-	
 	//start the Dear ImGui frame
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
 	ImGui::NewFrame();
-	//show demo
-	if (m_ShowDemo)
-	{
-		ImGui::ShowDemoWindow(&m_ShowDemo);
-	}
-	//create how to play instructions
-	ImGui::Begin("How to play");
-	ImGui::Text("up button kills player1");
-	ImGui::Text("left button increases score of player1");
 
-	ImGui::Text("down button kills player2");
-	ImGui::Text("right button increases score of player2");
-	ImGui::End();
-	
+	SceneManager::GetInstance().Render();
+	////show demo
+	//if (m_ShowDemo)
+	//{
+	//	ImGui::ShowDemoWindow(&m_ShowDemo);
+	//}
+
 	//render
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	
+
 	SDL_RenderPresent(m_Renderer);
 }
 
@@ -80,7 +72,7 @@ void dae::Renderer::Destroy()
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-	
+
 	if (m_Renderer != nullptr)
 	{
 		SDL_DestroyRenderer(m_Renderer);
