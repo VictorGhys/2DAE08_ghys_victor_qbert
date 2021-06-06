@@ -64,8 +64,7 @@ bool dae::InputManager::ProcessInput()
 
 bool dae::InputManager::IsPressed(ControllerButton button) const
 {
-	// todo: return whether the given button is pressed or not.
-
+	// returns whether the given button is pressed or not.
 	if (m_CurrentKeyStroke.Flags == m_KeystrokeMode && m_CurrentKeyStroke.VirtualKey == static_cast<WORD>(button))
 	{
 		return true;

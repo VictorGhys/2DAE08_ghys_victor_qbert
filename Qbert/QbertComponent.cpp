@@ -1,8 +1,6 @@
 #include "MiniginPCH.h"
 #include "QbertComponent.h"
 #include "HealthDisplayComponent.h"
-#include "ResourceManager.h"
-#include "PointsDisplayComponent.h"
 #include "QbertGame.h"
 #include "QbertObserver.h"
 #include "ServiceLocator.h"

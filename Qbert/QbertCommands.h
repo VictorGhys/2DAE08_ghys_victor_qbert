@@ -9,38 +9,6 @@
 
 namespace qbert
 {
-	class JumpCommand : public Command
-	{
-	public:
-		virtual void Execute() override { Jump(); };
-	private:
-		void Jump() { std::cout << "Jump\n"; };
-	};
-
-	class FireCommand : public Command
-	{
-	public:
-		virtual void Execute() override { Fire(); };
-	private:
-		void Fire() { std::cout << "Fire\n"; };
-	};
-
-	class DuckCommand : public Command
-	{
-	public:
-		virtual void Execute() override { Duck(); };
-	private:
-		void Duck() { std::cout << "Duck\n"; };
-	};
-
-	class FartCommand : public Command
-	{
-	public:
-		virtual void Execute() override { Fart(); };
-	private:
-		void Fart() { std::cout << "Fart\n"; };
-	};
-
 	class KillQbertCommand : public Command
 	{
 	public:
@@ -53,7 +21,7 @@ namespace qbert
 		void KillQbert()
 		{
 			std::cout << "Kill\n";
-			m_Qbert->GetComponentByType<qbert::QbertComponent>()->Kill();
+			m_Qbert->GetComponentByType<QbertComponent>()->Kill();
 		};
 		dae::GameObject* m_Qbert;
 	};
@@ -70,7 +38,7 @@ namespace qbert
 		void AddPoints()
 		{
 			std::cout << "Add Points\n";
-			m_Qbert->GetComponentByType<qbert::QbertComponent>()->ChangeTile();
+			m_Qbert->GetComponentByType<QbertComponent>()->ChangeTile();
 		};
 		dae::GameObject* m_Qbert;
 	};
@@ -86,7 +54,7 @@ namespace qbert
 	class MoveCommand : public Command
 	{
 	public:
-		MoveCommand(qbert::MovementComponent* movementComponent, qbert::MovementComponent::MoveDirection direction)
+		MoveCommand(MovementComponent* movementComponent, MovementComponent::MoveDirection direction)
 			:m_MovementComponent(movementComponent),
 			m_Direction(direction)
 		{
@@ -98,7 +66,7 @@ namespace qbert
 			m_MovementComponent->Move(m_Direction, true, true);
 			dae::ServiceLocator::GetSoundSystem().Play("../Data/jump.wav", 10);
 		}
-		qbert::MovementComponent* m_MovementComponent;
-		qbert::MovementComponent::MoveDirection m_Direction;
+		MovementComponent* m_MovementComponent;
+		MovementComponent::MoveDirection m_Direction;
 	};
 }

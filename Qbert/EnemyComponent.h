@@ -27,7 +27,6 @@ namespace qbert
 		MovementComponent* m_MovementComponent;
 		EnemyType m_Type;
 	private:
-
 		float m_MoveTime;
 		const float m_MoveIntervalTime;
 	};

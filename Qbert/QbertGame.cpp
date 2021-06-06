@@ -86,8 +86,8 @@ void qbert::QbertGame::Update()
 	if (m_EnemySpawnTime >= m_MaxEnemySpawnTime)
 	{
 		m_EnemySpawnTime = 0;
-		auto randomType = static_cast<EnemyComponent::EnemyType>((rand() % 4) + 1);
-		auto enemy = EnemyFactory::CreateEnemy(randomType, this);
+		const auto randomType = static_cast<EnemyComponent::EnemyType>((rand() % 4) + 1);
+		const auto enemy = EnemyFactory::CreateEnemy(randomType, this);
 		m_Enemies.push_back(enemy);
 		m_Scene.Add(enemy);
 	}

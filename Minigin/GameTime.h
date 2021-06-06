@@ -10,6 +10,6 @@ namespace dae
 		float GetDeltaTime() const;
 		void SetDeltaTime(float deltaTime);
 	private:
-		float m_DeltaTime;
+		float m_DeltaTime{};
 	};
 }

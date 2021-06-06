@@ -11,12 +11,6 @@ namespace dae
 {
 	enum class ControllerButton : WORD
 	{
-		//for keystate
-		/*ButtonA = XINPUT_GAMEPAD_A,
-		ButtonB = XINPUT_GAMEPAD_B,
-		ButtonX = XINPUT_GAMEPAD_X,
-		ButtonY = XINPUT_GAMEPAD_Y*/
-
 		//for keystroke
 		ButtonA = VK_PAD_A,
 		ButtonB = VK_PAD_B,
@@ -50,7 +44,7 @@ namespace dae
 		// controller
 		XINPUT_STATE m_CurrentState;
 		XINPUT_KEYSTROKE m_CurrentKeyStroke{};
-		//using ControllerCommandsMap = std::map<ControllerButton, Command*>;
+
 		using ControllerCommandsMap = std::map<ControllerButtonId, Command*>;
 		ControllerCommandsMap m_ConsoleCommands{};
 		WORD m_KeystrokeMode{ XINPUT_KEYSTROKE_KEYDOWN };

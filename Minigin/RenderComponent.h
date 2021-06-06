@@ -17,7 +17,7 @@ namespace dae {
 
 		void Update() override;
 		void Render() const;
-		std::shared_ptr<dae::Texture2D> GetTexture() const;
+		std::shared_ptr<Texture2D> GetTexture() const;
 		void SetTexture(const std::string& filename);
 		void SetTexture(const std::shared_ptr<Texture2D>& pTexture);
 		void SetPosition(float x, float y);

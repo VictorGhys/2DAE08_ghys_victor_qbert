@@ -1,6 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "SceneObject.h"
 
 namespace dae
 {
@@ -49,7 +48,6 @@ namespace dae
 		void SetPosition(float x, float y);
 		void AddComponent(Component* pComponent);
 		Transform* GetTransform() const;
-		//void SetTransform(const Transform& transform);
 
 		GameObject();
 		virtual ~GameObject();

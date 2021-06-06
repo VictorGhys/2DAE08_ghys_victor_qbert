@@ -10,7 +10,7 @@ namespace qbert
 	class QbertComponent : public dae::Component, public HealthComponent
 	{
 	public:
-		QbertComponent(dae::GameObject* pOwner, qbert::QbertGame* qbertGame);
+		QbertComponent(dae::GameObject* pOwner, QbertGame* qbertGame);
 		~QbertComponent() = default;
 		void Kill() override;
 		void Update() override;

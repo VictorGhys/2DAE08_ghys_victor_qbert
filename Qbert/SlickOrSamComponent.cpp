@@ -24,7 +24,6 @@ void qbert::SlickOrSamComponent::DoNextMove()
 }
 void qbert::SlickOrSamComponent::Kill()
 {
-	std::cout << "slick/sam died\n";
 	m_MovementComponent->GetQbertGame()->Destroy(m_pOwner);
 }
 void qbert::SlickOrSamComponent::CollisionWithPlayer(dae::GameObject* player)
