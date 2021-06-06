@@ -34,10 +34,15 @@ void dae::SDL2SoundSystem::Update()
 	{
 		while (!m_SoundQueue.empty() && !m_IsMuted)
 		{
-			Sound sound = m_SoundQueue.front();
+			/*Sound sound = m_SoundQueue.front();
 			m_SoundQueue.pop();
 			std::unique_lock<std::mutex> mutexLock(m_Mutex);
+			playSound(sound.path.c_str(), sound.volume);*/
+			std::unique_lock<std::mutex> mutexLock(m_Mutex);
+			Sound sound = m_SoundQueue.front();
+			m_SoundQueue.pop();
 			playSound(sound.path.c_str(), sound.volume);
+			mutexLock.unlock();
 		}
 		std::unique_lock<std::mutex> mLock{ m_Mutex };
 		m_ActiveCondition.wait(mLock);

@@ -171,6 +171,8 @@ void qbert::MovementComponent::SetPosRowCol(const glm::ivec2& pos)
 {
 	m_PosRow = pos.x;
 	m_PosCol = pos.y;
+	auto newPos = m_QbertGame->GetTile(m_PosRow, m_PosCol)->GetTransform()->GetPosition();
+	m_pOwner->GetTransform()->SetPosition(newPos);
 }
 
 dae::GameObject* qbert::MovementComponent::GetTileStandingOn() const

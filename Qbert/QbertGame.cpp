@@ -31,6 +31,7 @@ qbert::QbertGame::QbertGame(dae::Scene& scene, GameMode gameMode)
 	m_Scene(scene),
 	m_CurrentLevel(1),
 	m_MaxLevel(3),
+	m_TilesActiveToWinForLevels({ 28,56,28 }),
 	m_CollisionTime(),
 	m_CollisionIntervalTime(1),
 	m_QbertHasTakenDisk(false),
@@ -40,6 +41,7 @@ qbert::QbertGame::QbertGame(dae::Scene& scene, GameMode gameMode)
 	m_EnemySpawnTime()
 {
 	LevelTileComponent::m_ActiveTiles = 0;
+	m_TilesActiveToWin = 28;
 }
 void qbert::QbertGame::Update()
 {
@@ -122,10 +124,6 @@ void qbert::QbertGame::LoadGame()
 
 	m_Scene.SetGame(this);
 	srand(static_cast<unsigned>(time(nullptr)));
-
-	m_TilesActiveToWinForLevels.push_back(28);
-	m_TilesActiveToWinForLevels.push_back(56);
-	m_TilesActiveToWinForLevels.push_back(28);
 
 	auto go = new GameObject();
 	RenderComponent* renderComponent = new RenderComponent(go);
@@ -228,7 +226,7 @@ void qbert::QbertGame::LoadGame()
 
 	// Sounds
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
-	ServiceLocator::GetSoundSystem().Play("../Data/tune.wav", 50);
+	//ServiceLocator::GetSoundSystem().Play("../Data/tune.wav", 50);
 }
 
 void qbert::QbertGame::CreateLevel(const std::string& path)
