@@ -15,7 +15,7 @@ namespace dae
 		SDL2SoundSystem(SDL2SoundSystem&&) = delete;
 		SDL2SoundSystem& operator=(SDL2SoundSystem&&) = delete;
 
-		void Play(const std::string& path, const int volume) override;
+		void Play(const std::string& path, int volume) override;
 		void ToggleMute() override;
 	private:
 		void Update();

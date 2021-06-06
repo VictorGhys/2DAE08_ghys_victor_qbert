@@ -13,3 +13,7 @@ void dae::ServiceLocator::RegisterSoundSystem(SoundSystem* ss)
 {
 	m_SoundSystemInstance = ss == nullptr ? &m_DefaultSoundSystem : ss;
 }
+void dae::ServiceLocator::DeRegisterSoundSystem()
+{
+	delete m_SoundSystemInstance;
+}

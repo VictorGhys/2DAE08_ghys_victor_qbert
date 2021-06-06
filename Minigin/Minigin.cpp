@@ -10,7 +10,7 @@
 #include <SDL.h>
 #include "GameTime.h"
 #include "audio.h"
-//#include "Game.h"
+#include "Game.h"
 #include "SDL2SoundSystem.h"
 
 using namespace std;

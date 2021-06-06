@@ -6,6 +6,7 @@ namespace dae
 	{
 	public:
 		LoggingSoundSystem(SoundSystem* ss);
+		~LoggingSoundSystem();
 		void Play(const std::string& path, const int volume) override;
 		void ToggleMute() override;
 	private:

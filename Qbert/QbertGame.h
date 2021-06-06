@@ -27,7 +27,7 @@ namespace qbert
 			VERSUS
 		};
 		QbertGame(dae::Scene& scene, GameMode gameMode);
-		virtual ~QbertGame() override = default;
+		~QbertGame() override;
 		void LoadGame() override;
 		void Update() override;
 		void Render() override;

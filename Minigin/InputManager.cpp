@@ -12,6 +12,11 @@ dae::InputManager::~InputManager()
 		// delete commands of the binds
 		delete bind.second;
 	}
+	for (auto bind : m_KeyboardCommands)
+	{
+		// delete commands of the binds
+		delete bind.second;
+	}
 }
 bool dae::InputManager::ProcessInput()
 {
@@ -85,5 +90,8 @@ void dae::InputManager::UnBindCommand(const SDL_Keycode& keycode)
 {
 	auto It = m_KeyboardCommands.find(keycode);
 	if (It != m_KeyboardCommands.end())
+	{
 		m_KeyboardCommands.erase(It);
+		delete (*It).second;
+	}
 }

@@ -1,21 +1,11 @@
 #pragma once
 #include <Component.h>
 #include <iostream>
-//#include "GameObject.h"
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/glm.hpp>
-#pragma warning(pop)
 
 namespace dae {
 	class RenderComponent;
 }
 
-//#pragma warning(push)
-//#pragma warning (disable:4201)
-//#include <glm/glm.hpp>
-//#pragma warning(pop)
-//class GameObject;
 namespace qbert
 {
 	class QbertComponent;
@@ -34,7 +24,7 @@ namespace qbert
 		LevelTileComponent(dae::GameObject* pOwner, TileType type, float xpos, float ypos, QbertComponent* qbertComponent);
 		~LevelTileComponent() override = default;
 
-		void Update() override;
+		void Update() override {}
 		void SetTile(const std::string& filename) const;
 		void SetPosition(float x, float y) const;
 		TileType GetTileType() const { return m_Type; }

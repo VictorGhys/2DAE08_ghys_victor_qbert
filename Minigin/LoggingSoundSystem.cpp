@@ -7,6 +7,11 @@ dae::LoggingSoundSystem::LoggingSoundSystem(SoundSystem* ss)
 {
 }
 
+dae::LoggingSoundSystem::~LoggingSoundSystem()
+{
+	delete m_pRealSoundSystem;
+}
+
 void dae::LoggingSoundSystem::Play(const std::string& path, const int volume)
 {
 	if (!m_IsMuted)

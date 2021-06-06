@@ -39,15 +39,11 @@ qbert::LevelTileComponent::LevelTileComponent(dae::GameObject* pOwner, TileType 
 		m_Tile->SetWidth(32);
 		m_Tile->SetHeight(20);
 		// set disk on the right position
-		//m_Tile->SetPosition(m_Tile->GetPosition().x + 15.f, m_Tile->GetPosition().y - 20.f);
 		m_Tile->SetPosition(m_Tile->GetPosition().x + 15.f, m_Tile->GetPosition().y + 30.f);
 		break;
 	default:
 		break;
 	}
-}
-void qbert::LevelTileComponent::Update()
-{
 }
 
 void qbert::LevelTileComponent::SetTile(const std::string& filename) const
@@ -56,7 +52,6 @@ void qbert::LevelTileComponent::SetTile(const std::string& filename) const
 }
 void qbert::LevelTileComponent::SetPosition(float x, float y) const
 {
-	//m_Tile->SetPosition(x, y);
 	m_pOwner->GetTransform()->SetPosition(x, y, 0);
 }
 void qbert::LevelTileComponent::ChangeColor()

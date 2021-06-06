@@ -1,10 +1,9 @@
 #pragma once
-#include "Game.h"
 #include "MiniginLibType.h"
 struct SDL_Window;
 namespace dae
 {
-	//class Game;
+	class Game;
 	class GameObject;
 
 	class MINIGIN_ENTRY Minigin

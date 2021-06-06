@@ -20,7 +20,7 @@ dae::SDL2SoundSystem::~SDL2SoundSystem()
 	m_Thread.join();
 }
 
-void dae::SDL2SoundSystem::Play(const std::string& path, const int volume)
+void dae::SDL2SoundSystem::Play(const std::string& path, int volume)
 {
 	const Sound sound{ path, volume };
 	std::lock_guard<std::mutex> mutexLock{ m_Mutex };

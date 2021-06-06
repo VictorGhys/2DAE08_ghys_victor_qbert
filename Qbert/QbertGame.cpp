@@ -43,6 +43,12 @@ qbert::QbertGame::QbertGame(dae::Scene& scene, GameMode gameMode)
 	LevelTileComponent::m_ActiveTiles = 0;
 	m_TilesActiveToWin = 28;
 }
+
+qbert::QbertGame::~QbertGame()
+{
+	dae::ServiceLocator::DeRegisterSoundSystem();
+}
+
 void qbert::QbertGame::Update()
 {
 	CheckLevelCompleted();

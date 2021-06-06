@@ -9,5 +9,6 @@ namespace dae
 	public:
 		static SoundSystem& GetSoundSystem();
 		static void RegisterSoundSystem(SoundSystem* ss);
+		static void DeRegisterSoundSystem();
 	};
 }

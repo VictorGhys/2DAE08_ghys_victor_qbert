@@ -17,6 +17,7 @@ Scene::~Scene()
 	{
 		delete object;
 	}
+	delete m_Game;
 };
 
 void Scene::Add(GameObject* pObject)
@@ -43,13 +44,6 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	/*for (const auto& object : m_Objects)
-	{
-		if (object->GetComponentByType<RenderComponent>() != nullptr)
-		{
-			object->GetComponentByType<RenderComponent>()->Render();
-		}
-	}*/
 	for (const auto& object : m_Objects)
 	{
 		for (RenderComponent* renderComponent : object->GetComponentsByType<RenderComponent>())
