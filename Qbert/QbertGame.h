@@ -19,7 +19,13 @@ namespace qbert
 	class QbertGame final : public dae::Game
 	{
 	public:
-		QbertGame();
+		enum class GameMode
+		{
+			SINGLE_PLAYER,
+			CO_OP,
+			VERSUS
+		};
+		QbertGame(GameMode gameMode);
 		virtual ~QbertGame() override = default;
 		void LoadGame() override;
 		void Update() override;
@@ -36,14 +42,16 @@ namespace qbert
 		const static int m_LevelRows{ 7 };
 		const static int m_LevelCols{ 7 };
 		glm::ivec2 GetQbertPosForCoily() const;
-		void SetQbertPosForCoily(glm::ivec2 qbertPos) { m_QbertLastPos = qbertPos; }
+		void SetQbertPosForCoily(const glm::ivec2& qbertPos) { m_QbertLastPos = qbertPos; }
 		void SetQbertHasTakenDisk(bool hasTakenDisk) { m_QbertHasTakenDisk = hasTakenDisk; }
 	private:
 		void CreateLevel(const std::string& path);
-		dae::GameObject* CreatePlayer();
+		dae::GameObject* CreatePlayer(const glm::ivec2& spawnPos);
 		void CheckLevelCompleted();
 		void CollisionCheck();
+		glm::ivec2 GetPlayerSpawnPos(bool player2) const;
 
+		GameMode m_GameMode;
 		dae::GameObject* m_Level[m_LevelRows][m_LevelCols]{ nullptr };
 		dae::GameObject* m_Qbert;
 		dae::GameObject* m_Qbert2;

@@ -37,16 +37,19 @@ namespace dae
 	class InputManager : public Singleton<InputManager>
 	{
 	public:
+		using ControllerButtonId = std::pair<ControllerButton, DWORD>;
+
 		~InputManager();
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button) const;
-		void BindCommand(ControllerButton button, Command* command);
+		void BindCommand(ControllerButtonId buttonId, Command* command);
 		void BindCommand(const SDL_Keycode& keycode, Command* command);
 	private:
 		// controller
 		XINPUT_STATE m_CurrentState;
 		XINPUT_KEYSTROKE m_CurrentKeyStroke{};
-		using ControllerCommandsMap = std::map<ControllerButton, Command*>;
+		//using ControllerCommandsMap = std::map<ControllerButton, Command*>;
+		using ControllerCommandsMap = std::map<ControllerButtonId, Command*>;
 		ControllerCommandsMap m_ConsoleCommands{};
 		WORD m_KeystrokeMode{ XINPUT_KEYSTROKE_KEYDOWN };
 

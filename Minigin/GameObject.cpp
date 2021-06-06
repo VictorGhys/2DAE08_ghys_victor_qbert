@@ -30,10 +30,7 @@ dae::Transform* dae::GameObject::GetTransform() const
 {
 	return m_pTransform;
 }
-//void dae::GameObject::SetTransform(const Transform& transform)
-//{
-//	m_pTransform = transform;
-//}
+
 dae::GameObject::~GameObject()
 {
 	for (auto component : m_Components)

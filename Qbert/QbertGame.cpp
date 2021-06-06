@@ -24,8 +24,10 @@
 
 int qbert::QbertGame::m_TilesActiveToWin = 28;
 
-qbert::QbertGame::QbertGame()
-	:m_Qbert(nullptr),
+qbert::QbertGame::QbertGame(GameMode gameMode)
+	:m_GameMode(gameMode),
+	m_Qbert(nullptr),
+	m_Qbert2(nullptr),
 	m_Scene(dae::SceneManager::GetInstance().CreateScene("Qbert")),
 	m_CurrentLevel(1),
 	m_MaxLevel(3),
@@ -34,7 +36,8 @@ qbert::QbertGame::QbertGame()
 	m_QbertHasTakenDisk(false),
 	m_HasTakenDiskResetTime(),
 	m_CoilySpawnTime(),
-	m_Coily(nullptr)
+	m_Coily(nullptr),
+	m_EnemySpawnTime()
 {
 }
 void qbert::QbertGame::Update()
@@ -90,19 +93,6 @@ void qbert::QbertGame::LoadGame()
 	// best way to do this is to read it in from a file
 	//Scene& scene = SceneManager::GetInstance().CreateScene("Qbert");
 
-	/*auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
-	go->SetPosition(216, 180);
-	scene.Add(go);
-
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);*/
 	m_Scene.SetGame(this);
 	srand(static_cast<unsigned>(time(nullptr)));
 
@@ -139,44 +129,20 @@ void qbert::QbertGame::LoadGame()
 	m_Scene.Add(go);
 
 	// Create Player 1
-	m_Qbert = CreatePlayer();
+	m_Qbert = CreatePlayer(GetPlayerSpawnPos(false));
 	auto movementComponent = m_Qbert->GetComponentByType<MovementComponent>();
 	auto& input = InputManager::GetInstance();
 	//create controller binds player 1
-	input.BindCommand(ControllerButton::ButtonUP, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
-	input.BindCommand(ControllerButton::ButtonDOWN, new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
-	input.BindCommand(ControllerButton::ButtonLEFT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
-	input.BindCommand(ControllerButton::ButtonRIGHT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
+	input.BindCommand({ ControllerButton::ButtonUP,0 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
+	input.BindCommand({ ControllerButton::ButtonDOWN, 0 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
+	input.BindCommand({ ControllerButton::ButtonLEFT,0 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
+	input.BindCommand({ ControllerButton::ButtonRIGHT,0 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 	//create keyboard binds player 1
 	input.BindCommand('w', new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
 	input.BindCommand('s', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
 	input.BindCommand('a', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
 	input.BindCommand('d', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
 
-	// Create Player 2
-	m_Qbert2 = CreatePlayer();
-	movementComponent = m_Qbert2->GetComponentByType<MovementComponent>();
-	//create controller binds player 2
-	/*input.BindCommand(ControllerButton::ButtonUP, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
-	input.BindCommand(ControllerButton::ButtonDOWN, new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
-	input.BindCommand(ControllerButton::ButtonLEFT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
-	input.BindCommand(ControllerButton::ButtonRIGHT, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));*/
-	//create keyboard binds player 2
-	input.BindCommand('o', new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
-	input.BindCommand('l', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
-	input.BindCommand('k', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
-	input.BindCommand('m', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
-
-	// Create Level
-	CreateLevel("../Data/Level1.txt");
-
-	// put qbert on the foreground
-	m_Scene.Remove(m_Qbert);
-	m_Scene.Add(m_Qbert);
-
-	auto qbert2 = new GameObject();
-	qbert2->AddComponent(new QbertComponent(qbert2));
-	m_Scene.Add(qbert2);
 	// points player 1
 	go = new GameObject();
 	auto pointsDisplayComponent = new PointsDisplayComponent(go, "", font);
@@ -184,13 +150,7 @@ void qbert::QbertGame::LoadGame()
 	pointsDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
 	pointsDisplayComponent->SetPosition(0, 30);
 	m_Scene.Add(go);
-	// points player 2
-	go = new GameObject();
-	auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font, "Points2: ");
-	qbert2->AddComponent(pointsDisplayComponent2);
-	pointsDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
-	pointsDisplayComponent2->SetPosition(0, 60);
-	m_Scene.Add(go);
+
 	// health player 1
 	go = new GameObject();
 	auto healthDisplayComponent = new HealthDisplayComponent(go, "", font);
@@ -198,30 +158,58 @@ void qbert::QbertGame::LoadGame()
 	healthDisplayComponent->SetQbert(m_Qbert->GetComponentByType<QbertComponent>());
 	healthDisplayComponent->SetPosition(0, 90);
 	m_Scene.Add(go);
-	// health player 2
-	go = new GameObject();
-	auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font, "Lives2: ");
-	qbert2->AddComponent(healthDisplayComponent2);
-	healthDisplayComponent2->SetQbert(qbert2->GetComponentByType<QbertComponent>());
-	healthDisplayComponent2->SetPosition(0, 110);
-	m_Scene.Add(go);
+
+	if (m_GameMode == GameMode::CO_OP)
+	{
+		// Create Player 2
+		m_Qbert2 = CreatePlayer(GetPlayerSpawnPos(true));
+		movementComponent = m_Qbert2->GetComponentByType<MovementComponent>();
+		//create controller binds player 2
+		input.BindCommand({ ControllerButton::ButtonUP,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
+		input.BindCommand({ ControllerButton::ButtonDOWN,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
+		input.BindCommand({ ControllerButton::ButtonLEFT,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
+		input.BindCommand({ ControllerButton::ButtonRIGHT,1 }, new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
+		//create keyboard binds player 2
+		input.BindCommand('o', new MoveCommand(movementComponent, MovementComponent::MoveDirection::UP));
+		input.BindCommand('l', new MoveCommand(movementComponent, MovementComponent::MoveDirection::DOWN));
+		input.BindCommand('k', new MoveCommand(movementComponent, MovementComponent::MoveDirection::LEFT));
+		input.BindCommand('m', new MoveCommand(movementComponent, MovementComponent::MoveDirection::RIGHT));
+
+		// points player 2
+		go = new GameObject();
+		auto pointsDisplayComponent2 = new PointsDisplayComponent(go, "", font, "Points2: ");
+		m_Qbert2->AddComponent(pointsDisplayComponent2);
+		pointsDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
+		pointsDisplayComponent2->SetPosition(0, 60);
+		m_Scene.Add(go);
+		// health player 2
+		go = new GameObject();
+		auto healthDisplayComponent2 = new HealthDisplayComponent(go, "", font, "Lives2: ");
+		m_Qbert2->AddComponent(healthDisplayComponent2);
+		healthDisplayComponent2->SetQbert(m_Qbert2->GetComponentByType<QbertComponent>());
+		healthDisplayComponent2->SetPosition(0, 110);
+		m_Scene.Add(go);
+	}
+	// Sound Binds
+	input.BindCommand('p', new ToggleMuteCommand());
+	input.BindCommand({ ControllerButton::ButtonSTART, 0 }, new ToggleMuteCommand());
+	input.BindCommand({ ControllerButton::ButtonSTART, 1 }, new ToggleMuteCommand());
+
+	// Create Level
+	CreateLevel("../Data/Level1.txt");
+
+	// put qbert on the foreground
+	m_Scene.Remove(m_Qbert);
+	m_Scene.Add(m_Qbert);
+	if (m_GameMode == GameMode::CO_OP)
+	{
+		m_Scene.Remove(m_Qbert2);
+		m_Scene.Add(m_Qbert2);
+	}
 
 	// Sounds
 	ServiceLocator::RegisterSoundSystem(new LoggingSoundSystem(new SDL2SoundSystem()));
-	/*ServiceLocator::GetSoundSystem().Play("../Data/highlands.wav", 50);
-	ServiceLocator::GetSoundSystem().Play("../Data/door1.wav", 100);*/
-
-	//create binds
-	input.BindCommand(ControllerButton::ButtonA, new JumpCommand());
-	input.BindCommand(ControllerButton::ButtonB, new FireCommand());
-	input.BindCommand(ControllerButton::ButtonX, new DuckCommand());
-	input.BindCommand(ControllerButton::ButtonY, new FartCommand());
-	input.BindCommand(ControllerButton::ButtonRB, new KillQbertCommand(m_Qbert));
-	input.BindCommand(ControllerButton::ButtonLB, new AddPointsCommand(m_Qbert));
-	input.BindCommand(ControllerButton::ButtonRT, new KillQbertCommand(qbert2));
-	input.BindCommand(ControllerButton::ButtonLT, new AddPointsCommand(qbert2));
-
-	input.BindCommand(ControllerButton::ButtonSTART, new ToggleMuteCommand());
+	ServiceLocator::GetSoundSystem().Play("../Data/tune.wav", 50);
 }
 
 void qbert::QbertGame::CreateLevel(const std::string& path)
@@ -271,7 +259,8 @@ void qbert::QbertGame::CreateLevel(const std::string& path)
 		row++;
 	}
 }
-dae::GameObject* qbert::QbertGame::CreatePlayer()
+
+dae::GameObject* qbert::QbertGame::CreatePlayer(const glm::ivec2& spawnPos)
 {
 	using namespace dae;
 	auto qbert = new GameObject();
@@ -282,7 +271,7 @@ dae::GameObject* qbert::QbertGame::CreatePlayer()
 	renderComponent->SetHeight(32);
 	renderComponent->SetPosition(20, -15);
 
-	MovementComponent* movementComponent = new MovementComponent(qbert, this, { 0,3 });
+	MovementComponent* movementComponent = new MovementComponent(qbert, this, spawnPos);
 	qbert->AddComponent(movementComponent);
 
 	qbert->AddComponent(new QbertComponent(qbert));
@@ -415,5 +404,22 @@ glm::ivec2 qbert::QbertGame::GetQbertPosForCoily() const
 	{
 		// return the actual pos of qbert
 		return m_Qbert->GetComponentByType<MovementComponent>()->GetPosRowCol();
+	}
+}
+
+glm::ivec2 qbert::QbertGame::GetPlayerSpawnPos(bool player2) const
+{
+	switch (m_GameMode)
+	{
+	case GameMode::SINGLE_PLAYER:
+		return glm::ivec2{ 0,3 };
+	case GameMode::CO_OP:
+		if (player2)
+			return glm::ivec2{ 6,6 };
+		return glm::ivec2{ 6,0 };
+	case GameMode::VERSUS:
+		return glm::ivec2{ 0,3 };
+	default:
+		return glm::ivec2{ 0,3 };
 	}
 }

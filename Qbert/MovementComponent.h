@@ -25,7 +25,7 @@ namespace qbert
 			SIDEWAYS_LEFT,
 			SIDEWAYS_RIGHT,
 		};
-		MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, glm::ivec2 spawnPos);
+		MovementComponent(dae::GameObject* pOwner, QbertGame* qbertGame, const glm::ivec2& spawnPos);
 
 		void Update() override;
 		void Move(MoveDirection direction, bool changeColor = false, bool canTakeDisk = false, bool revertColor = false);

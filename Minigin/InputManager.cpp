@@ -46,7 +46,8 @@ bool dae::InputManager::ProcessInput()
 			// handle controller input
 			for (auto It{ m_ConsoleCommands.begin() }; It != m_ConsoleCommands.end(); ++It)
 			{
-				if (IsPressed(It->first))
+				// if the button is pressed and the player id is the same
+				if (IsPressed(It->first.first) && It->first.second == i)
 				{
 					m_ConsoleCommands[It->first]->Execute();
 				}
@@ -66,9 +67,9 @@ bool dae::InputManager::IsPressed(ControllerButton button) const
 	}
 	return false;
 }
-void dae::InputManager::BindCommand(dae::ControllerButton button, Command* command)
+void dae::InputManager::BindCommand(ControllerButtonId buttonId, Command* command)
 {
-	m_ConsoleCommands[button] = command;
+	m_ConsoleCommands[buttonId] = command;
 }
 void dae::InputManager::BindCommand(const SDL_Keycode& keycode, Command* command)
 {
