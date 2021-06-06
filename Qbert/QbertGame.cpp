@@ -411,6 +411,20 @@ void qbert::QbertGame::CollisionCheck()
 		// there is collision
 		(*It)->GetComponentByType<EnemyComponent>()->CollisionWithPlayer(m_Qbert);
 	}
+	// collision with second player
+	if (m_GameMode == GameMode::CO_OP)
+	{
+		dae::GameObject* qbert2StandOnTile = m_Qbert2->GetComponentByType<MovementComponent>()->GetTileStandingOn();
+		auto It2 = std::find_if(m_Enemies.begin(), m_Enemies.end(), [&qbert2StandOnTile](dae::GameObject* enemy)
+			{
+				return enemy->GetComponentByType<MovementComponent>()->GetTileStandingOn() == qbert2StandOnTile;
+			});
+		if (It2 != m_Enemies.end())
+		{
+			// there is collision
+			(*It2)->GetComponentByType<EnemyComponent>()->CollisionWithPlayer(m_Qbert2);
+		}
+	}
 }
 
 void qbert::QbertGame::Destroy(dae::GameObject* object)
