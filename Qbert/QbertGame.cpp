@@ -61,7 +61,7 @@ void qbert::QbertGame::Update()
 	}
 	if (m_GameObjectsToDestroy.size() > 10)
 	{
-		std::cout << "wtf!???\n";
+		std::cout << "GameObjects are not getting destroyed!\n";
 	}
 	m_GameObjectsToDestroy.clear();
 
